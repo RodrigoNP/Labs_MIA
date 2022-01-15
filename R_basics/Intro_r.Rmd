@@ -38,6 +38,13 @@ A grandes razgos, baso estos labs en tres fuentes/profesores:
 * Curso de MPA de Adrián Lucardi-> Eventualmente lo llevarán. 
 
 Animo a checar estas fuentes ante cualquier inquietud adicional. 
+
+# Material de los labs
+
+## Github
+Todo el material de apoyo de los labs estará en Github.
+
+* RodrigoNP/Labs_MIA
   
 # Estructura de los labs
 
