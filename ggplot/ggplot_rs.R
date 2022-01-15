@@ -31,4 +31,66 @@ min<-left_join(min_within, min_cross,
                by=c('year'='year', 'country_name'='country_name')) 
 
 
+# Recordemos como hicimos para crear el df #
+
+min<- min %>% mutate(
+  female=ifelse(gender=='Female',1,0))
+
+min_grouped<- min %>% 
+  group_by(year) %>% 
+  summarise(
+    fem_mean.year=mean(female,
+                       na.rm=T) )
+
+# Grafiquemos con ggplot #
+# Este seria el grafico mas rudimentario
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line() 
+
+#podemos aniadir esteticas gradualmente
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()+
+  ggtitle('Porcentaje de Mujeres en el gabinete por año')+
+  xlab('Año')+
+  ylab('')
+
+# De hecho, podemos aniadir figuras, como una linea horizontal
+
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()+
+  ggtitle('Porcentaje de Mujeres en el gabinete por año')+
+  xlab('Año')+
+  ylab('')+
+  geom_hline(yintercept = with(min_grouped, mean(fem_mean.year)), color='red')
+
+## Datos agrupados ##
+
+# Despues del merge tenemos informacion de regimen. Queremos graficar agrupando por regimen. Primero necesitamos crear el df
+
+min_regime<-min %>% group_by(system_category) %>% summarise(
+  fem.mean_regime=mean(female,
+                       na.rm=T)
+)
+
+# Esta vez queremos hacer un grafico de barras
+
+ggplot(min_regime,
+       aes(system_category, fem.mean_regime,
+           fill=system_category))+
+  geom_bar(stat = 'identity')+ #stat=identity es para que no se apilen las barras
+  theme_minimal() # theme cambia el estilo: hay varias opciones
+
+# notamos que las letras se apilan, asi que busque en internet como hacer para cambiar su angulo
+
+ggplot(min_regime,
+       aes(system_category, fem.mean_regime,
+           fill=system_category))+
+  geom_bar(stat = 'identity')+
+  xlab('')+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=40, hjust=1),
+        panel.grid.major.y = element_line())
 
