@@ -1,0 +1,468 @@
+
+---
+title: "ggplot"
+author: "Rodrigo Negrete Pérez"
+date: \today
+
+theme: "CambridgeUS"
+colortheme: 'beaver'
+output: 
+  beamer_presentation:
+    slide_level: 2
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+
+# Merge
+
+## Merge
+
+La sesión anterior hablamos un poco de los merge, pero no hicimos ninguno. 
+
+* Utilizamos la base de minsitros de Nyrup y Bramwell...bueno una de ellas
+* Descarguemos la otra y hagamos un merge
+* La pueden encontra en Github en la carpeta de ggplot. 
+* Descarguen de nuevo la base de minsitros pasada ¿Cómo?
+
+##
+
+```{r, cache=TRUE, results='hide',warning=FALSE}
+
+setwd('C:/Users/rodri/OneDrive - INSTITUTO TECNOLOGICO AUTONOMO DE MEXICO/Labs MIA/04_ggplot' )
+
+library(tidyverse)
+
+min_within<-readxl::read_excel('WhoGov_within_V1.1.xlsx', 
+                               guess_max=999999999)
+min_cross<-readxl::read_excel('WhoGov_crosssectional_V1.1.xlsx',
+                              guess_max=9999999)
+```
+
+##
+
+* ¿En qué se diferencian?
+
+* ¿Cómo podemos ver las diferencias?
+
+* Si queremos añadir los datos del gobierno a la base de ministros, ¿qué tipo de merge tenemos que hacer?
+
+##
+
+```{r, eval=FALSE}
+min<-left_join(min_within, 
+               min_cross,
+               by=c('year'='year',      'country_name'='country_name'))
+```
+
+## 
+
+* Sale un error, frecuente con los merge, es algo fácilmente corregible.
+
+```{r, cache=TRUE}
+min_cross$year<-as.numeric(min_cross$year)
+min_within$year<-as.numeric(min_within$year)
+```
+
+* ¿Cómo lo harías con dplyr?
+
+## 
+
+* Reintentemos el merge
+```{r, cache=TRUE}
+min<-left_join(min_within, 
+               min_cross,
+               by=c('year'='year', 'country_name'='country_name'))
+```
+
+
+# Intro a ggplot
+
+## 
+
+* R tiene funciones para graficar incorporadas. 
+
+* Sin embargo, ggplot es el paquete más utilizado. 
+
+* Tiene una sintaxis estándar, amplia personalización y muchos otros paquetes adicionales. 
+* Su principal virtud es que podemos añadir elementos fácilmente
+
+## ggplot: sintaxis
+
+* Primero debemos especificar:
+  + Base de datos
+  + aes: variables en los ejes
+* Segundo: Geometría->Linea, barras, puntos, etc.
+* Tercero: Estética
+  + Título
+  + Ejes
+  + Labels
+  
+##
+
+* Dentro de ggplot() ponemos el df y aes
+  + En aes() especificamos nuestras dos variables
+
+* Añadimos un + y ponemos después la geometría
+
+```{r, eval=FALSE}
+ggplot(data= ,
+       aes(x= , y= ))+
+  geom_line() # geom_
+```
+
+
+## Ejemplo
+
+* La sesión pasada obtuvimos el promedio de mujeres en el gabinete por año
+
+```{r, cache=TRUE}
+min<- min %>% mutate(
+    female=ifelse(gender=='Female',1,0))
+
+min_grouped<- min %>% 
+  group_by(year) %>% 
+  summarise(
+    fem_mean.year=mean(female,
+                       na.rm=T) )
+```
+
+## 
+
+* Intentemos graficar con ggplot
+```{r, eval=FALSE}
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()
+```
+
+
+##
+
+```{r, echo=F, cache=TRUE}
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()
+```
+## 
+
+* Podemos cambiar cuestiones como los títulos o los ejes
+* Tenemos que añadir un + para cada uno
+
+```{r, eval=FALSE}
+ggplot(data= ,
+       aes(x= , y= ))+
+  geom_line()+
+  ggtitle('Título')+
+  xlab('Eje X')+
+  ylab('Eje Y')
+  
+```
+
+##
+
+```{r, eval=FALSE}
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()+
+  ggtitle('Porcentaje de Mujeres en el gabinete por año')+
+  xlab('Año')+
+  ylab('')
+```
+
+##
+
+```{r, echo=FALSE, cache=TRUE}
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()+
+  ggtitle('Porcentaje de Mujeres en el gabinete por año')+
+  xlab('Año')+
+  ylab('')
+```
+
+## 
+
+* Podemos añadir una figura adicional
+* Por ejemplo, intentemos poner el promedio de porcentaje a lo largo de todo el periodo como una línea horizontal
+
+##
+
+```{r, eval=FALSE}
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()+
+  ggtitle('Porcentaje de Mujeres en el gabinete por año')+
+  xlab('Año')+
+  ylab('')+
+  geom_hline(yintercept = mean(fem_mean.year), color='r')
+```
+
+##
+
+```{r, echo=F, cache=TRUE}
+ggplot(data=min_grouped,
+       aes(x=year, y=fem_mean.year))+
+  geom_line()+
+  ggtitle('Porcentaje de Mujeres en el gabinete por año')+
+  xlab('Año')+
+  ylab('')+
+  geom_hline(yintercept = with(min_grouped, mean(fem_mean.year)),
+             color='red')
+```
+
+# Graficar datos agrupados
+
+## 
+
+* Una característica útil de ggplot es que puede graficar datos agrupados fácilmente
+* ggplot asigna un color a cada categoría.
+
+## Línea
+
+* Supongamos que queremos ver la proporción de mujeres en el gabinete, pero ahora por régimen político. 
+* Primero tenemos que crear el df
+  + De hecho lo podemos crear directamente en la función de ggplot.
+  
+##
+
+```{r, eval=FALSE}
+min_regime<-min %>% group_by(system_category) %>% summarise(
+  fem.mean_regime=mean(female,
+                       na.rm=T)
+)
+```
+
+##
+```{r, echo=FALSE}
+min_regime<-min %>% group_by(system_category) %>% summarise(
+  fem.mean_regime=mean(female,
+                       na.rm=T)
+)
+min_regime
+```
+
+## Gráfico de barras
+
+Supongamos que queremos hacer un gráfico de barras
+
+* Queremos que haya una barra para cada régimen
+* También queremos colores distintos. 
+
+Tenemos que decirle a ggplot que agrupe por la categoría y que coloreé por la categoría
+
+## 
+
+Un par de consideraciones:
+
+* color es para líneas; fill, para el relleno.
+  + En el caso de una gráfica de barras, queremos fill.
+  
+* Podemos poner fill/color dentro o fuera de aes(), pero los resultados son distintos:
+  + Dentro-> ggplot colorea la figura agrupando por la variable (lo que queremos en este caso)
+  + Fuera-> ggplot interpreta que quieres ese color específico o paleta de colores: 'red','black'. 
+  
+* ggplot automáticamente inserta una leyenda con un código de colores para las categorías  
+
+##
+
+* Entonces, nosotros queremos el color dentro de aes()
+
+```{r, eval=FALSE}
+ggplot(min_regime,
+       aes(system_category, fem.mean_regime,
+           fill=system_category))+
+  geom_bar(stat = 'identity')+
+  theme_minimal()
+```
+* Las gráficas de barras pueden apilarse o ponerse una al lado de la otra: de ahí que especifiquemos stat='identity'
+
+* con theme() podemos cambiar el estilo
+
+##
+
+```{r, echo=FALSE, cache=TRUE}
+ggplot(min_regime,
+       aes(system_category, fem.mean_regime,
+           fill=system_category))+
+  geom_bar(stat = 'identity')+
+  xlab('')+
+  theme_minimal()
+```
+
+##
+
+* Generemos algunos datos para los siguientes ejemplos
+
+```{r, cache=TRUE}
+set.seed(2020)
+x<- rnorm(1000, 5, 2)
+y<-1.5*x+.5*x^2+ rnorm(10000,50,60)
+df<-data.frame(x,y)
+head(df)
+```
+
+## Scatterplot
+
+* Grafiquemos los puntos
+
+```{r, eval=FALSE}
+ggplot(df, aes(x,y))+
+  geom_point()
+```
+
+
+##
+
+```{r, echo=FALSE}
+ggplot(df, aes(x,y))+
+  geom_point()
+```
+
+## alpha=
+
+* Al tener muchos datos, nuestro scatterplot se ve como una fea mancha negra
+* Podemos especificar la transparencia, para que no se vea tan empalmado
+
+```{r, eval=FALSE}
+ggplot(df, aes(x,y))+
+  geom_point(alpha=.2)
+```
+
+##
+
+```{r, echo=FALSE}
+ggplot(df, aes(x,y))+
+  geom_point(alpha=.2)
+```
+
+## geom_smooth()
+
+* Podemos añadir una línea de regresión fácilemente con **geom_smooth()**
+* Automáticamente añade los intervalos de confianza
+* Por default, interpreta que es la regresión de y sobre x
+* Añadimos que el método es "lm" por linear model
+
+```{r, eval=FALSE}
+ggplot(df, aes(x,y))+
+  geom_point(alpha=.2)+
+  geom_smooth(method='lm')
+```
+
+
+
+##
+
+```{r, echo=FALSE}
+ggplot(df, aes(x,y))+
+  geom_point(alpha=.2)+
+  geom_smooth(method='lm')
+```
+
+## 
+
+Los intervalos de confiana casi no se ven porque tenemos muchas observaciones
+
+## Densidad
+
+* usemos geom_density() para visualizar la densidad
+* Obvio, solo necesitamos una variable, pero que esté en un df
+
+```{r, eval=FALSE}
+ggplot(df)+
+  geom_density(aes(x))
+```
+
+##
+
+```{r, echo=FALSE}
+ggplot(df)+
+  geom_density(aes(x))
+```
+
+## Histograma
+
+* Análogamente, podemos hacer un histograma
+* con bins= podemos controlar las marcas de clases
+
+```{r, eval=FALSE}
+ggplot(df)+
+  geom_histogram(aes(x), bins=100)
+```
+
+##
+
+```{r, echo=FALSE}
+ggplot(df)+
+  geom_histogram(aes(x), bins=100)
+```
+
+
+# Infinita personalización
+
+## Lo básico
+
+* Hasta aquí, lo básico de ggplot. 
+* Las posibilidades de personalización son infinitas
+* Basta buscar en internet
+
+##
+
+* Por ejemplo, las letras están empalmadas.
+* Busqué en internet cómo cambiar el ángulo
+* salió que tenía que añadir
+
+ theme(axis.text.x = element_text(angle=40, hjust=1),
+        panel.grid.major.y = element_line())
+
+##
+
+```{r, eval=FALSE}
+ggplot(min_regime,
+       aes(system_category, fem.mean_regime,
+           fill=system_category))+
+  geom_bar(stat = 'identity')+
+  xlab('')+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=40, hjust=1),
+        panel.grid.major.y = element_line())
+```
+
+##
+
+```{r, echo=FALSE}
+ggplot(min_regime,
+       aes(system_category, fem.mean_regime,
+           fill=system_category))+
+  geom_bar(stat = 'identity')+
+  xlab('')+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle=40, hjust=1),
+        panel.grid.major.y = element_line())
+```
+
+# ggsave()
+
+## ggsave()
+
+* Podemos guardar el nuestra gráfica generada como un archivo de formato de nuestra preferencia con ggsave()
+* Ejecutarlo una y otra vez no genera un nuevo archivo, sino que lo sobreescribe, en caso de no haber cambiado
+* Podemos modificar tamaño o escala
+
+##
+```{r, eval=FALSE}
+ggsave(
+  filename, # nombre para guardar
+  plot = last_plot(), # grafica que va a guardar (ultima pred.)
+  device = NULL, # formato
+  path = NULL, # donde lo va a guardar
+)
+```
+

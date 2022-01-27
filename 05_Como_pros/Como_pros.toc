@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Intro}{4}{0}{1}
+\beamer@sectionintoc {2}{Carpetas}{6}{0}{2}
+\beamer@sectionintoc {3}{Master file}{13}{0}{3}
+\beamer@sectionintoc {4}{R Markdown}{20}{0}{4}

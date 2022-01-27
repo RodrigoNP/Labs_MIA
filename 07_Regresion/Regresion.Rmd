@@ -1,0 +1,30 @@
+
+---
+title: "Regresión Lineal"
+author: "Rodrigo Negrete Pérez"
+date: \today
+
+theme: "CambridgeUS"
+colortheme: 'beaver'
+output: 
+  beamer_presentation:
+    slide_level: 2
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(xtable)
+```
+
+# Regrsión a la Media
+
+## Chicharitos
+
+* En 1889 Galto popularizó la "regresión a la media"
+* Las vainas de chícharos:
+  + 
