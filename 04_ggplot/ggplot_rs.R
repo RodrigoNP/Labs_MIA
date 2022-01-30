@@ -94,3 +94,31 @@ ggplot(min_regime,
   theme(axis.text.x = element_text(angle=40, hjust=1),
         panel.grid.major.y = element_line())
 
+# generemos algunos datos para las siguientes graficas
+
+set.seed(2020)
+x<- rnorm(1000, 5, 2)
+y<-1.5*x+.5*x^2+ rnorm(10000,50,60)
+df<-data.frame(x,y)
+head(df)
+
+## Scatterplot ##
+
+ggplot(df, aes(x,y))+
+  geom_point(alpha=.2)
+
+## geom_smoot() ##
+
+ggplot(df, aes(x,y))+
+  geom_point(alpha=.2)+
+  geom_smooth(method='lm')
+
+## Densidad ##
+
+ggplot(df)+
+  geom_density(aes(x))
+
+## Histograma ##
+
+ggplot(df)+
+  geom_histogram(aes(x), bins=100)
