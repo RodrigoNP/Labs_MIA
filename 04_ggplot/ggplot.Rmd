@@ -343,6 +343,12 @@ ggplot(df, aes(x,y))+
   geom_point(alpha=.2)
 ```
 
+## geom_jitter()
+
+* Con el mismo propósito, podemos usar geom_jtter() cuando tenemos muchas observaciones juntas en una región pequeña de la gráfica. Muy útil para variables categóricas, aunque en este caso no es tan necesario
+
+
+
 ## geom_smooth()
 
 * Podemos añadir una línea de regresión fácilemente con **geom_smooth()**
@@ -452,6 +458,7 @@ ggplot(min_regime,
 
 ## ggsave()
 
+* Los gráficos de ggplot() pueden guardarse como cualquier objeto
 * Podemos guardar el nuestra gráfica generada como un archivo de formato de nuestra preferencia con ggsave()
 * Ejecutarlo una y otra vez no genera un nuevo archivo, sino que lo sobreescribe, en caso de no haber cambiado
 * Podemos modificar tamaño o escala
