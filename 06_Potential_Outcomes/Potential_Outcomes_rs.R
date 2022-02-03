@@ -32,12 +32,17 @@ length(df[y0>y1, ])
 
 ## Efectos causales ##
 ate<-with(df, mean(delta))
+
 att<-with(filter(df, t==1), mean(delta))
+
 atc<-with(filter(df, t==0), mean(delta))
+
 ci<-with(filter(df, t==1), 
          mean(y_observada))- 
   with(filter(df, t==0), 
        mean(y_observada))
+
+s.bias<-with(filter(df, t==1), mean(y0))-with(filter(df, t==0), mean(y0))
 
 ## Simulaciones ##
 
@@ -92,3 +97,36 @@ ggplot()+
                  bins = 100)+
   geom_vline(xintercept = 
                mean(error_estimates))
+
+## Sesgo de seleccion ##
+
+set.seed(2022)
+n<-10000
+i<-1:n
+y0<-rnorm(n, 30, 10)
+y1<-rnorm(n, 50, 35)
+df<-data.frame(i,y0,y1)
+
+# Asignamos el tratamiento
+df<-mutate(df, t=ifelse(y1-y0>10,1,0) )
+
+
+# Ya con el tratamiento, ponemos la y observada
+df<-mutate(df,y_observada=y0+(y1-y0)*t)
+
+# Podemos poner el efecto causal individual
+
+df<-mutate(df, delta=y1-y0)
+
+ate<-with(df, mean(delta))
+
+att<-with(filter(df, t==1), mean(delta))
+
+atc<-with(filter(df, t==0), mean(delta))
+
+ci<-with(filter(df, t==1), 
+         mean(y_observada))- 
+  with(filter(df, t==0), 
+       mean(y_observada))
+
+s.bias<-with(filter(df, t==1), mean(y0))-with(filter(df, t==0), mean(y0))

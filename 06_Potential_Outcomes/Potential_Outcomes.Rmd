@@ -18,6 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, include=FALSE}
 library(tidyverse)
 library(xtable)
+options(xtable.comment = FALSE)
 ```
 
 # Introducción 
@@ -492,6 +493,93 @@ ggplot()+
 * Nuestro CI tiende a sobreestimar el efecto real de la uni (y por mucho)
 * Extrapolando: si los individuos se autoseleccionan, el CI va a estar sesgado
 * La dirección y tamaño del sesgo va a depender del proceso de autoselección y los datos
+
+## 
+
+* ¿Qué está pasando? 
+* Regresemos a la definición de CI y manipulemos un poco la expresión
+
+\[ CI= E[Y_{1i} |T_i=1]-E[Y_{0i}|T_i=0] \]
+
+* Sumemos un cero $\color{blue}{E[Y_{0i}|T_i=1]}$
+
+##
+
+\begin{equation}
+\begin{aligned}
+ E[Y_{1i} |T_i=1]-E[Y_{0i}|T_i=0]= E[Y_{1i} |T_i=1]  \\ 
+ \color{blue}{- E[Y_{0i}|T_i=1]+  E[Y_{0i}|T_i=1]} \color{black}{-E[Y_{0i}|T_i=0]}
+\end{aligned}
+\end{equation}
+
+## 
+
+Si agrupamos los térmimos, notamos que primero aparece el ATT, seguido del Sesgo de selección
+
+
+\[ \text{Sesgo de Selección }= E[Y_{0i}|T_i=1]- E[Y_{0i}|T_i=0]\]
+
+* El sesgo de selección es, en promedio, qué tan diferentes eran los tratados de los no tratados antes del tratamiento, de ahí que sea la diferencia en y0
+
+
+
+## 
+
+Entonces
+
+\[ \text{CI=ATT+ Sesgo de Selección} \]
+
+## 
+
+* Hagamos una sola corrida para ver qué está pasando
+
+* Intenten hacer las simulaciones en casa
+
+##
+
+```{r, results='hide'}
+set.seed(2022)
+n<-10000
+i<-1:n
+y0<-rnorm(n, 30, 10)
+y1<-rnorm(n, 50, 35)
+df<-data.frame(i,y0,y1)
+# Asignamos el tratamiento
+df<-mutate(df, t=ifelse(y1-y0>10,1,0) )
+# Ya con el tratamiento, ponemos la y observada
+df<-mutate(df,y_observada=y0+(y1-y0)*t)
+# Podemos poner el efecto causal individual
+df<-mutate(df, delta=y1-y0)
+```
+
+
+##
+```{r}
+df<-mutate(df, delta=y1-y0)
+ate<-with(df, mean(delta))
+att<-with(filter(df, t==1), mean(delta))
+atc<-with(filter(df, t==0), mean(delta))
+ci<-with(filter(df, t==1), 
+         mean(y_observada))- 
+  with(filter(df, t==0), 
+       mean(y_observada))
+s.bias<-with(filter(df, t==1), mean(y0))-
+  with(filter(df, t==0), mean(y0))
+
+```
+
+##
+
+```{r}
+print(ate)
+print(ci)
+print(att)
+print(s.bias)
+```
+
+## 
+
+El ATE y el CI difieren por mucho. El CI es el ATT más el Sesgo de selección. El problema es que el ATT difiere enormemente del ATE porque los que se tratan son solo aquellos cuyo efecto causal es grande. Cuando hay sesgo de selección el ATE  es muy diferente al CI. 
 
 ## Ley de los grandes números
 

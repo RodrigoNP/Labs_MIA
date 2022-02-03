@@ -19,12 +19,121 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, include=FALSE}
 library(tidyverse)
 library(xtable)
+options(xtable.comment = FALSE)
 ```
 
-# Regrsión a la Media
+# Regresión a la Media
 
 ## Chicharitos
 
-* En 1889 Galto popularizó la "regresión a la media"
+* En 1889 Galton popularizó la "regresión a la media"
 * Las vainas de chícharos:
-  + 
+  + Las extremadamente largas tenían hijas largas, pero no tanto como sus padres
+  + Las extremadamente pequeñas tenían hijas pequeñas, pero no tanto como su padres
+  + Los hijos revertían, regresaban a un promedio
+  
+  
+* Queremos una línea que, con los datos,  prediga la longitud promedio de los hijos, dada la de los padres
+
+## FEC (CEF)
+
+* El objeto matemático es la *Función de Esperanza Condicional*
+* CEF en inglés
+* Nos da el promedio de Y dado un conjunto de valores de X (condicionando por X)
+* Puede tener cualquier forma, pero podemos estimarla usando una línea
+
+# GDP
+
+## ¿Qué queremos? 
+
+* Nos interesa la relación entre una variable X y una variable Y
+  * Un tratamiento y un outcome
+  
+* En general, no sabemos "la verdad", las relaciones auténticas  
+
+* El objetivo es acercarnos a "la verdad" a través de los datos
+
+* Con datos simulados sí que sabemos la verdad
+
+## Proceso de Generación de Datos (GDP)
+
+* n observaciones con dos variables: ($x_1, x_2 , ..., x_n$) y ($y_1, y_2, ..., y_n$)
+
+* GDP es como un caja negra: entra una x, pasa algo, y se convierte en una y
+
+* Definamos un GDP
+
+\[ y_i=\alpha + \beta \  x_i + \epsilon_i \]
+
+* reconocemos que hay procesos estocásticos ($\epsilon$)
+
+
+
+## 
+
+Construyamos un df. Supongamos:
+ 
+* $N=10,000$
+* $\alpha = 5$
+* $\beta= 4$
+* $x \sim N(20, 15)$
+* $\epsilon \sim N(5,2)$
+ 
+## 
+
+```{r, results='hide', cache=TRUE}
+set.seed(2022)
+n<-10000
+alpha=5
+beta= 4
+x<-rnorm(n,50,15)
+e<-rnorm(n,5,2)
+y<-alpha+ beta*x + e
+df<-data.frame(x,y)
+```
+
+## 
+
+```{r, echo=FALSE, results='asis'}
+xtable(head(df), caption = NULL)
+```
+
+##
+
+* En nuestro caso, el GDP es la "verdad"
+* Entonces, ¿como podemos inferir la verdad a partir de la muestra?
+
+
+# MCO
+
+
+
+
+## 
+
+* Ya con nuestros datos, queremos la línea que encaje mejor
+* Llamemos a esta línea $\hat{y}=\hat{\beta_0}+ \hat{\beta_1}x$
+* El **residuo** es $\hat{u_i}= y_i-\hat{y_i} $
+  + La diferencia entre lo que observamos y lo que predecimos con nuestra línea estimada
+  + NO COFUNDIR RESIDUOS CON ERRORES DEL DGP
+* Si sustituimos $\hat{y_i}$  
+
+\[ \hat{u_i}= y_i- \hat{\beta_0}+ \hat{\beta_1}x_i \]
+  
+
+## Mínimos Cuadrados Ordinarios (MCO)
+
+* MCO minimiza las sumas de los cuadrados de los residuos
+
+\[ Min  \]
+
+* Se publicó el procedimiento en 1805 por Legendre
+* Gauss ya lo había empleado
+  + Le pareció tan trivial que lo publicó hasta 1809
+  + Desarrolló algunos teoremas para el procedimiento
+  
+* OLS en inglés  
+
+
+
+  
