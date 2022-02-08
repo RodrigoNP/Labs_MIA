@@ -44,7 +44,7 @@ Animo a checar estas fuentes ante cualquier inquietud adicional.
 ## Github
 Todo el material de apoyo de los labs estará en Github.
 
-* RodrigoNP/Labs_MIA
+* rodrigonp/Labs_MIA
   
 # Estructura de los labs
 
