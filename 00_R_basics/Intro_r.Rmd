@@ -66,6 +66,15 @@ La otra parte será aplicar R a MIA.
 
 Estos labs se darán cuando se haya cubierto el material del curso pertinente. 
 
+## MPA
+
+* Mucho de lo que vamos a ver lo van a cubrir en MPA
+* Si ya lo vieron, sirve para repasar, profundizar o resolver dudas
+* Para los que son de MPA recomiendo ver la presentación Como_pros en el Github
+* Los labs sirven para:
+ + Resolver dudas puntuales
+ + Ayuda para las tareas
+
 # ¿Qué es R?
 
 ## Lenguaje orientado a objetos
