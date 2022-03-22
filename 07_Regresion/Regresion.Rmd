@@ -40,15 +40,49 @@ options(xtable.comment = FALSE)
 * El objeto matemático es la *Función de Esperanza Condicional*
 * CEF en inglés
 * Nos da el promedio de Y dado un conjunto de valores de X (condicionando por X)
-* Puede tener cualquier forma, pero podemos estimarla usando una línea
+
+\[E[Y_i | X_i=x] \]
+
+* Es una curva que puede tener cualquier forma
+
+
+
+## Propiedad de desomposición de la FEC
+
+* Puedo descomponer una una variable aleatoria en su FEC y un término de error independiente a X
+
+\[Y_i=E[ Y_i | X_i] + \varepsilon_i \]
+
+* $\varepsilon_i$ debe ser ortogonal (independiente) y por ende no puede estar correlacionado con $X_i$
+
+* Cualquier variable aleatoria puede ser explicada por su FEC y un sobrante independiente a $X_i$
+
+
+## Propiedades de Predicción de la FEC
+
+Sea $m(X_i)$ cualquier función de $X_i$. La FEC resuelve
+
+\[ E[Y_i | X_i] =  \underset{m(X_i)}{\operatorname{argmin}} E[(Y_i-m(X_I))^2]\]
+
+La FEC es el mejor predictor de $Y_i$ dado $X_i$, pues minimiza el promedio de los cuadrados de los errores. 
+
+## Teorema ANOVA
+
+* Podemos descomponer la varianza de $y_i$ en la varianza de la FEC y la del residuo
+
+\[ Var(Y_i)= Var(E[ Y_i | X_i]) + Var(\varepsilon_i) \]
+
+* Nótese que seguimos asumiendo que $X_i$ y $\varepsilon_i$ son ortogonales
+
 
 # GDP
 
 ## ¿Qué queremos? 
 
 * Nos interesa la relación entre una variable X y una variable Y
-  * Un tratamiento y un outcome
-  
+
+* Un tratamiento y un outcome
+
 * En general, no sabemos "la verdad", las relaciones auténticas  
 
 * El objetivo es acercarnos a "la verdad" a través de los datos
@@ -63,24 +97,23 @@ options(xtable.comment = FALSE)
 
 * Definamos un GDP
 
-\[ y_i=\alpha + \beta \  x_i + \epsilon_i \]
+\[ y_i=\alpha + \beta x_i + \varepsilon_i \]
 
-* reconocemos que hay procesos estocásticos ($\epsilon$)
-
+* reconocemos que hay procesos estocásticos ($\varepsilon_i$)
 
 
 ## 
 
 Construyamos un df. Supongamos:
- 
+  
 * $N=10,000$
 * $\alpha = 5$
 * $\beta= 4$
 * $x \sim N(20, 15)$
 * $\epsilon \sim N(5,2)$
- 
+  
 ## 
-
+  
 ```{r, results='hide', cache=TRUE}
 set.seed(2022)
 n<-10000
@@ -102,38 +135,588 @@ xtable(head(df), caption = NULL)
 
 * En nuestro caso, el GDP es la "verdad"
 * Entonces, ¿como podemos inferir la verdad a partir de la muestra?
-
-
-# MCO
-
-
-
-
-## 
-
-* Ya con nuestros datos, queremos la línea que encaje mejor
-* Llamemos a esta línea $\hat{y}=\hat{\beta_0}+ \hat{\beta_1}x$
-* El **residuo** es $\hat{u_i}= y_i-\hat{y_i} $
-  + La diferencia entre lo que observamos y lo que predecimos con nuestra línea estimada
-  + NO COFUNDIR RESIDUOS CON ERRORES DEL DGP
-* Si sustituimos $\hat{y_i}$  
-
-\[ \hat{u_i}= y_i- \hat{\beta_0}+ \hat{\beta_1}x_i \]
   
-
+  
+  
+# MCO
+  
+  
+  
+  
 ## Mínimos Cuadrados Ordinarios (MCO)
-
+  
 * MCO minimiza las sumas de los cuadrados de los residuos
-
-\[ Min  \]
 
 * Se publicó el procedimiento en 1805 por Legendre
 * Gauss ya lo había empleado
   + Le pareció tan trivial que lo publicó hasta 1809
   + Desarrolló algunos teoremas para el procedimiento
-  
+
 * OLS en inglés  
 
+##
 
+* Queremos estimar la línea $\hat{\alpha_i}+ \hat{\beta} X_i$ que mejor se ajuste a los datos. 
+* $\hat{y_i}=\hat{\alpha_i}+ \hat{\beta} X_i$ es el valor ajustado para i
+* el residuo $\hat{\varepsilon_i}=yi-\hat{y_i}$ es la distancia vertical entre el valor real y nuestra línea
+
+##
+
+* Queremos que esa distancia, en general, sea muy chiquita
+* La cuadramos $\hat{u_i}^2$ 
+* Queremos que todos los residuos sean pequeños, entonces minimizamos :
+
+\[\underset{\hat{\alpha}, \hat{\beta}}{\operatorname{argmin}}\sum_{n=1}^{n} \hat{\varepsilon_i}^2= \sum_{n=1}^{n} (yi-\hat{y_i})^2= \sum_{n=1}^{n} (y_i - \hat{\alpha_i}- \hat{\beta} X_i)^2  \]
+ 
+* Escogemos $\alpha$ y $\beta$ que minimicen la suma de residuos cuadrados
+ 
+##
+
+Usando Cálculo obtenemos que 
+
+\[\hat{\alpha}= \bar{y_i} - \hat{\beta} \bar{x_i}\]
+\[ \hat{\beta}= \frac{\text{Cov}(x,y)}{\text{Var}(x)}\]
+
+## Regresión Multivariada
+
+* Con múltiples variables es muy similar, solo que tenemos que trabajar con matrices
+* Resolvemos el mismo problema, solo que con $(K \times 1)$ regresores y una matriz b de $(K \times 1)$ coeficientes
+
+\[\underset{\hat{b}}{\operatorname{argmin}} E[(y_i-X_i' b)^2] \]
+
+C.P.O
+
+\[ E[X_i(y_i-X_i')b]=0\]
+
+* Notémos que, por construcción, $\text{Cov}(x,\hat{\varepsilon})=0$
+
+## 
+
+Obtenemos
+
+\[ b= E[X_iX_i']^{-1} E[X_iy_i]\]
+
+* A excepción del intercepto 
+
+\[\hat{\beta_k}= \frac{\text{Cov}(x_{ki},y)}{\text{Var}(x_{ki})} \]
+
+## Regresión en R
+ 
+En R, para hacer una regresión usamos la función **lm()**
+
+```{r}
+lm(y~x)
+```
+
+##
+
+* Podemos usar la función summary para sustraer información del modelo
+* Podemos guardar el modelo como cualquier objeto
+
+```{r}
+lm<- lm(y~x)
+```
+
+
+* Para luego sustraer elementos del modelo, y operar con ellos como cualquier vector
+
+```{r}
+summary(lm)$coefficients
+```
+```{r}
+residuals<-summary(lm)$residuals
+head(residuals)
+```
 
   
+##
+
+* R tiene funciones base para sacar valores predichos
+```{r}
+fitted.values<-fitted(lm)
+head(fitted.values)
+```
+## Mecánicas de MCO
+
+Por el proceso matemático, las regresiones siempre cumplen algunas propiedades
+
+* Suma de residuos es igual a 0
+
+```{r}
+sum(residuals)
+
+```
+* De hecho, para eso es el intercepto
+
+##
+
+* $Cov(X,\hat{\varepsilon_i})=0$ 
+* $Cov(\hat{Y_i},\hat{\varepsilon_i})=0$
+```{r}
+cov(x, residuals)
+cov(fitted.values, residuals)
+```
+##
+
+* La propiedad anova
+
+\[\sum Y_i^2=\sum\hat{Y_i^2}+ \sum \hat{\varepsilon_i^2}\]
+
+```{r}
+sum(y^2)==sum(fitted.values^2)+sum(residuals^2)
+```
+
+
+```{r}
+mean(y)-mean(fitted.values)
+```
+
+## 
+
+* Estas propiedades de la regresión se cumplen sin importar la relación que haya entre las verdaderas variables
+* No concluyan que su modelo es bueno porque se cumple lo anterior: siempre se cumple
+
+##
+
+* Supongamos un PGD donde $Y=\beta X+\varepsilon$ , $\varepsilon \sim N(-.4,1)$, $X \sim N(-.1,4)$, $cov(\varepsilon,X)=-.85$ y $\beta=-3$. Tenemos una muestra de tamaño 251
+* X y $\varepsilon$ están covariando
+
+##
+```{r, cache=TRUE}
+library(MASS)
+set.seed(2022)
+n<-251
+beta<--3
+sigma<-matrix(c(4,-.85,-.85,1),2)
+mu<-c(-.1,-.4)
+data<-data.frame(mvrnorm(n=n, mu, sigma))
+y1<-data$X1*beta+data$X2
+
+```
+
+##
+```{r, cache=TRUE}
+lm_biased<-summary(lm(y1~X1,
+                      data = data))
+
+cov(data$X1, lm_biased$residuals)
+```
+* A pesar de que X y $\varepsilon$ están covariando, la covarianza entre los residuos y X sigue siendo 0. 
+
+# Inferencia Estadística
+
+* Los valores de los coeficientes siempre tienen una distribución asintótica muestral si asumimos que contamos con una muestra aleatoria 
+
+* Su distribución se deriva de
+  + Ley de los Grandes Números: Momentos muestrales convergen en probabilidad a los momentos poblacionales
+  + Teorema Central del Límite: Los momentos muestrales se distribuyen asintóticamente normal
+  
+##
+
+* Los coeficentes de distribuyen asintóticamente normal, pues son momentos muestrales
+
+\[ b= E[X_iX_i']^{-1} E[X_iy_i]\]
+
+* Es inmediato que $E[b]=\beta$
+* Si sustituimos $Y_i$ como $X'_i\beta+\varepsilon_i$, aplicamos la Esperanza y Varianza, y nos mantenemos con nuestro supuesto de $Cov(X,\varepsilon_i)=0$, la matriz de varianzas y covarianzas es
+
+\[E[X_iX'_i]^{-1} E[X_i X'_i e_i^2] E[X_iX'_i]^{-1}\]
+
+##
+
+* El **error estándar** de un coeficiente es su desviación estándar. 
+* R nos arroja la su error estándar y la construcción del estadístico de prueba t
+* Usamos el t porque sustituimos la varianza del error con la del residuo
+
+\[\frac{b_j-\beta_j}{S \sqrt{(X'X)^{-1}}}\sim t(n-k-1)\]
+
+\[\frac{b_j-\beta_j}{Se(b_j)} \sim t(n-k-1)\]
+
+## 
+
+```{r}
+summary(lm)
+```
+
+
+## Pvalues
+
+* R arroja automáticamente los pvalues 
+* En este contexto, se define como la probalidad de obtener el coeficiente que obtuve, asumiendo la hipótesis nula
+* Asumir la hipótesis nula significa que el efecto verdadero es 0, entonces $\beta = 0$
+* Si asumimos esto, conocemos perfecetamente la distribución de del coeficiente $b_j$ 
+
+\[\frac{b_j}{Se(b_j)}\]
+
+##
+
+* En nuestro contexto, el pvalue de la x es muy pequeño, muy cercano a 0. 
+* Es decir, asumiendo que no hay un efecto verdadero (que la esperanza del coeficiente es 0), la probabilidad que el coeficiente me haya dado 3.99 solo por cuestiones muestrales (de chiripa) es de 0 
+* Como obtuve 3.99, es muy poco probable que haya sido por cuestiones muestrales, seguro lo obtuve porque el efecto verdadero es distinto de 0
+* Si regresamos a nuestro PGD, el efecto verdadero es de 4
+
+
+## Regla de dedo
+
+* Una  regla de dedo es que el valor del coeficiente (en valor absoluto) tiene que ser más grande que el doble del valor estándar para que sea estidísticamente significativo al 5%
+
+\[ b_j > 2 Se (b_j)\]
+\[\frac{b_j}{Se(b_j)} > 2\]
+
+* ¿Por qué? Por una prueba de hipótesis nula de dos colas
+
+
+## 
+
+* Comúnmente hacemos una prueba de dos colas con el 5% de probabilidad de ambos lados, o 2.5 de cada lado. 
+* Alfa=.05
+
+```{r}
+alfa<-.05
+qt(p=alfa/2, n-2)
+```
+* Recordemos que la t es simétrica
+* Es decir, en una distribución t, el 5 por ciento de la probabilidad se acumula antes del -1.96 y después del 1.96 (2.5% de cada lado)
+
+## 
+
+* Para rechazar la hipótesis nula con un nivel de confianza del 5%, necesitamos que el estadístico t sea más grande que 1.96 (en valor absoluto)
+* Lo anterior sucede cuando $b_j > 2 Se (b_j)$
+* Para ver si un coeficiente es significativo al 5% podemos usar esta heurística
+
+# Justificación de la Regresión
+
+## FEC y Regresión
+
+* Pasamos un rato hablando de la FEC y sus propiedades
+* En resumen, la FEC es el mejor predictor de la distribución de una variable aleatoria, dado un conjunto de controles X
+* La FEC y la regresión guardan una relación cercana
+* La línea de regresión es el mejor estimador lineal de la CEF
+* De hecho, si la FEC es lineal, es la regresión 
+
+## Pruebas de hipótesis
+
+* Con supuestos mínimos podemos obtener errores estándar de los coeficientes 
+* De ahí que podamos contruir pruebas de hipótesis para ver si lo que obtuvimos es estadísticamente significativo
+
+## Insesgados y eficientes
+
+* Si asumimos que el modelo está correctamente especificado, los estimadores de MCO son insesgados
+* Bajo los supuestos de $E[\varepsilon]=0$ , también son eficientes. 
+
+## Controles
+
+* Es muy fácil añadir controles
+* Muy similar a hacer matching (lo veremos más adelante)
+
+# Inferencia casual y regresión
+
+## Asosiación Estadística
+
+* Sin importar qué, el coeficiente de una regresión siempre es igual a 
+
+\[\hat{\beta_k}= \frac{\text{Cov}(x_{ki},y)}{\text{Var}(x_{ki})} \]
+
+* Es decir, siempre podremos calcular la covarianza entre dos variables usando una regresión
+* MCO pondera por la varianza, asigna más peso a las observaciones que a una x dada tienen mayor información (lo podremos ver más fácilmente cuando veamos matching o controles)
+* Es muy útil para ver asociaciones estadísticas en datos panel.
+
+## Interpretación Causal
+
+* Una regresión es causal cuando la FEC que estima es causal
+* Para derivar las propiedades de la FEC utilizamos matemáticas en las que venían implícitos muchos supuestos, pero hicimos uno más claro que $\varepsilon$ debe ser independiente a X
+
+## Potential Outcomes
+
+* Recordemos el modelo de PO
+* Tenemos un tratamiento dicotómico
+
+\begin{equation}
+Y_i=
+  \begin{cases}
+  Y_{1i} , & \text{si}\ t=1\\
+  Y_{0i} , & \text{si}\ t=0
+  \end{cases}
+\end{equation}
+
+* Asumimos dos PO, pero solo observamos uno
+
+
+## Modelos saturados
+
+* Los modelos saturados son aquellos con variables explicativas discretas, donde el modelo incluye un parámetro separado para todas las posibles combinaciones que se puedan tomar por estas variables explicativas
+* Nuestro tratamiento es una Dummy-> una variable que solo puede tomar los valores de 0 o 1
+
+##
+
+* Cuando las variables son dummies, los coeficientes asociados tienen una interpretación particular
+* supongamos que tenemos un modelo solo con dos dummies
+* El modelo saturado es
+
+\[Y_i=\alpha+ \beta x_{1i}+ \gamma x_{2i}+ \delta(x_{1i}x_{2i})+\varepsilon_i \]
+* Es decir, añadimos las dummies y un término de interacción para cada posible combinación
+
+## 
+
+\[Y_i=\alpha+ \beta x_{1i}+ \gamma x_{2i}+ \delta(x_{1i}x_{2i})+\varepsilon_i \]
+
+Entonces, la interpretación de los coeficientes es 
+
+\[E[Y_i| x_{1i}=0, x_{2i}=0]=\alpha\]
+\[E[Y_i| x_{1i}=1, x_{2i}=0]=\alpha+\beta\]
+\[E[Y_i| x_{1i}=0, x_{2i}=1]=\alpha+\gamma\]
+\[E[Y_i| x_{1i}=1, x_{2i}=1]=\alpha+\beta+ \gamma+ \delta\]
+
+## Efecto del tratamiento con una regresión
+
+* Si nuestra regresión es de PO y un tratamiento dummy
+
+\[Y_{observada}= \alpha+ \beta T_i+ \varepsilon_i\]
+
+\[E[Y_{0i}| T_i=0]=\alpha\]
+\[E[Y_{1i}| T_i=1]=\alpha+\beta\]
+
+##
+
+* Si recuerdan,  $CI=E[Y_{1i}| T_i=1]-E[Y_{0i}| T_i=0]$
+* Entonces, 
+
+\[CI=E[Y_{1i}| T_i=1]-E[Y_{0i}| T_i=0]=\alpha+\beta-\alpha=\beta\]
+
+##
+
+* El modelo de PO es una herramienta que nos ayuda a entender cuándo una regresión tiene interpretación causal. Si recordamos
+
+\begin{equation}
+\begin{aligned}
+ E[Y_{1i} |T_i=1]-E[Y_{0i}|T_i=0]= E[Y_{1i} |T_i=1] - E[Y_{0i}|T_i=1] \\ 
+ \color{blue}{+ E[Y_{0i}|T_i=1]-E[Y_{0i}|T_i=0]} \\
+\end{aligned}
+\end{equation}
+
+\[CI=ATT+Selection \ bias\]
+
+## 
+
+* La $\beta$ de la regresión va a estar estimando el efecto verdadero del tratamiento cuando no hay sesgo de selección
+* En ese caso, el CI va a estimar al ATT, el cual debería ser muy similar al ATE y los grupos tratados y control son muy similares
+
+## Conditional Independence Assumption CIA
+
+* También llamado Unconfoundedness o Selection-on-observables
+
+\[\{Y_{0i}, Y_{1i}\} \amalg T_i |X_i\]
+
+* En palabras, una vez que controlemos por lo que queramos, el tratamiento debe ser independiente de los potencial outcomes
+* Condicionando por lo que quieras, T debe ser cuasialeatorio
+* Condicionar por X elimina el sesgo de selección
+
+##
+
+* Hay otros supuestos que están implícitos en las mates que utilizamos para las propiedades de la FEC y de MCO
+* El supuesto grande es CIA
+* Si el tratamiento es aleatorio, nuestra regresión estima el ATE
+
+# Variables Omitidas, Matching y Controles
+
+## Datos observacionales
+
+* El problema de las ciencias sociales es que trabajamos con datos observacionales
+* En general, no podemos hacer muchos experimentos
+* Los individuos se autoseleccionan, creando sesgo
+* Si los individuos se autoseleccionan, estamos comparando individuos que no son comparables
+
+## Variables omitidas
+
+* Una variables omita es aquella que está correlacionada con X y simultaneamente correlacionada con Y
+* Si está correlacionada con X, viola CIA
+* Regresemos al ejemplo de potential outcomes: Salarios
+
+
+## 
+
+* Nuestra Y sigue siendo los salarios
+* Pensemos en que nuestro tratamiento es un programa de entrenamientos
+
+\[Y_{1i}= \alpha+ \beta T_i+ \gamma Mujer_i+ \varepsilon_i\]
+
+##
+
+* Supongamos que el efecto del programa es $\beta=5$ y $\alpha=10$
+* Supongamos $\varepsilon_i\sim N(2,5)$
+* Supongamos que las mujeres ganan en promedio 2 menos
+* Supongamos que las mujeres tienen una mayor probabilidad de tratarse
+  + Si es mujer, la probabilidad de que se trate es de .9
+  + Si es hombre, .4
+* ¡Simulemos!
+
+## 
+
+```{r,cache=TRUE}
+set.seed(2022)
+n<-10000
+i<-1:n
+beta<- 5
+alpha<-10
+gamma<--2
+e<-rnorm(n, 2, 5)
+sex<-sample(c(1,0), n, replace = T)
+t<-ifelse(sex==1, sample(c(rep(1,9), 0)), sample(c(rep(1,4), rep(0,6))))
+y<-alpha+beta*t+gamma*sex+e
+df<-data.frame(i,sex,t,y)
+```
+
+##
+
+```{r}
+set.seed(2022)
+beta_biased<-NULL
+for (x in (1:5000)) {
+n<-10000
+i<-1:n
+beta<- 5
+alpha<-10
+gamma<--2
+e<-rnorm(n, 2, 5)
+sex<-sample(c(1,0), n, replace = T)
+t<-ifelse(sex==1, sample(c(rep(1,9), 0)), sample(c(rep(1,4), rep(0,6))))
+y<-alpha+beta*t+gamma*sex+e
+df<-data.frame(i,sex,t,y)  
+
+beta_biased[x]<-summary(lm(y~t))$coefficients[2,1]
+}
+
+```
+
+## 
+```{r}
+mean(beta_biased)
+```
+
+
+* El estimador está sesgado, tiende a subestimar el efecto del tratamiento
+* El sexo es una variable omitida
+  + Está correlacionada con el tratamieno (o X), pues es más probable que las mujeres se traten
+  + Simultáneamente, el sexo hace que las mujeres ganen menos 
+
+##
+
+* No incluir el sexo es como si esa variable se fuera al error
+* Entonces, como el sexo está correlacionado con el tratamiento, ahora el error también lo estará
+* Esto incumple CIA
+* Comparamos individuos que no son comparables
+
+## 
+
+* Evidentemente, lo primero que podríamos hacer es asignar el tratamiento de manera aleatoria
+
+```{r, cache=TRUE}
+set.seed(2022)
+beta_unbiased<-NULL
+for (x in (1:5000)) {
+n<-10000
+i<-1:n
+beta<- 5
+alpha<-10
+gamma<--2
+e<-rnorm(n, 2, 5)
+sex<-sample(c(1,0), n, replace = T)
+t<- sample(c(1,0),n, replace = T)
+y<-alpha+beta*t+gamma*sex+e
+df<-data.frame(i,sex,t,y)  
+beta_unbiased[x]<-summary(lm(y~t))$coefficients[2,1]
+}
+
+```
+
+##
+
+```{r}
+mean(beta_unbiased)
+```
+
+
+* De nuevo, con datos observacionales, no podemos asignar el tratamiento de manera aleatoria
+
+## Matching
+
+* Si el problema es que estamos comparando individuos que no son comparables, qué tal si comparamos individuos que sí lo son
+* Que tal si
+  + Comparamos mujeres contra mujeres y vemos el efecto del tratamiento
+  + Hacemos lo mismo para los hombres 
+  + Promediamos los efectos de alguna manera
+* Esta es la idea fundamental del Matching  
+  
+##
+
+* ¡Es justo lo que hace una regresión saturada! 
+
+\[Y_{1i}= \alpha+ \beta T_i+ \gamma Mujer_i+ \varepsilon_i\]
+
+\[E[Y_i| T_{i}=0, Mujer_i=0]=\alpha\]
+\[E[Y_i| T_i=1, Mujer_i=0]=\alpha+\beta\]
+\[E[Y_i| T_i=0, Mujer_i=1]=\alpha+\gamma\]
+\[E[Y_i| T_i=1, Mujer_i=1]=\alpha+\gamma+\beta\]
+
+* Podríamos añadir la interacción
+  + Si añadimos una interacción, estamos presuponiendo que el efecto del programa va a ser diferente para hombres que para mujeres
+  + Por ahora, simplifiquemos el análisis
+
+## 
+
+* Podemos obtener el efecto causal viendo solo a los hombres o solo a las mujeres
+
+\[E[Y_i| T_i=1, Mujer_i=0]-E[Y_i| T_{i}=0, Mujer_i=0]=\alpha+\beta-\alpha=\beta\]
+\[E[Y_i| T_i=1, Mujer_i=1]-E[Y_i| T_{i}=1, Mujer_i=0]=\alpha+\beta+ \gamma-\alpha-\gamma=\beta\]
+
+* Lo que hace MCO es ponderar estos dos efectos por la varianza de los datos: si no hubiera hombres tratados, no asignaría efecto causal a los hombres; no tendríamos con qué comparar
+
+##
+
+```{r, cache=TRUE}
+set.seed(2022)
+beta_biased<-NULL
+beta_unbiased<-NULL
+for (x in (1:5000)) {
+n<-10000
+i<-1:n
+beta<- 5
+alpha<-10
+gamma<--2
+e<-rnorm(n, 2, 5)
+sex<-sample(c(1,0), n, replace = T)
+t<-ifelse(sex==1, sample(c(rep(1,9), 0)), sample(c(rep(1,4), rep(0,6))))
+y<-alpha+beta*t+gamma*sex+e
+df<-data.frame(i,sex,t,y)  
+beta_biased[x]<-summary(lm(y~t))$coefficients[2,1]
+beta_unbiased[x]<-summary(lm(y~t+sex))$coefficients[2,1]
+}
+```
+
+##
+
+```{r}
+mean(beta_biased)
+mean(beta_unbiased)
+```
+
+##
+
+* CIA dice que, una vez condicionando por lo que querramos (en nuestro caso el sexo), la asignación del tratamiento es cuasialeatoria
+* En nuestro caso, lo es
+  + Una vez que controlamos por mujer, lo que difiere es aleatorio: el error
+
+
+## Controlar por observables
+
+* El problema es que estamos asumiendo algo: ser mujer es la única variable que hace que los individuos se autoseleccionen
+* Al controlar por sexo, obtenemos grupos comparables, pues asumimos que es lo único que hace a los individuos autoseleccionarse
+* En este caso, así es. No podemos argumentar lo mismo con datos observacionales
+
+##
+
+* El razonamiento se puede repetir con las variables que pensamos que están correlacionadas con Y y X simultáneamente
+* Si controlamos por todas las variables que pensamos que influyen Y y X simultáneamente, obtendríamos grupos comparables
+* A esta Estrategia de identificación se le conoce como regresión con controles
+* La ventaja de la regrsión es que admite variables continuas
+* El problema es que no podemos hacer esto para variables no observables o para las que no tenemos datos
