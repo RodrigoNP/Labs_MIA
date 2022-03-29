@@ -720,3 +720,142 @@ mean(beta_unbiased)
 * A esta Estrategia de identificación se le conoce como regresión con controles
 * La ventaja de la regrsión es que admite variables continuas
 * El problema es que no podemos hacer esto para variables no observables o para las que no tenemos datos
+
+
+# Tablas de regresión
+
+## 
+
+* Para ver un ejemplo de cómo hacer una tabla, consulta el el Rscript Regresion_rs.R en esta misma carpeta
+
+* Se utiliza el paquete stargazer
+* Para ver cómo incluir en un markdown, consulta Tabla.Rmd en la carpeta Tabla. Para ver como queda, consulta el pdf en la misma carpeta
+
+## 
+
+* A grandes rasgos, utilizamos el paquete stargazer
+* Escogemos type='text' para editar durante el código
+
+## Tablas en Markdown 
+
+* Si queremos incluirlo en un documento, lo más fácil es en markdown 
+* Hacemos un chunk donde importamos el código donde trabajamos con source()
+* Cuando incluyamos la tabla, hacemos un chunk con la display option results='asis'
+* Corremos el código de stargazer con type='latex' y header=F
+
+## 
+
+* Si lo quieren hacer en latex, pueden simplemente copiar y pegar el código que sale como output de correr stargazer()
+* O pueden hacer lo mismo que en markdown, pero con el paquete Sweave
+
+##
+
+* pueden guardar tablas en carpetas con out='path'
+* Si de plano lo quieren en un word
+  + out= 'path'
+  + type='html'
+  + abren el html y le toman screenshot
+  
+  
+## Interpretación coeficientes
+
+* Asumamos que la regresión es causal
+* ¿Cómo interpretamos los coeficientes?
+* Depende de si nuestras variables están en niveles o logaritmos
+
+## Puntos porcentuales vs porciento
+
+* Un cambio de 10 a 15% es un incremento de 5 puntos porcentuales
+* No es un cambio del 5% 
+* Es un cambio de $50 \% = 100 \frac{15-10}{10}$
+
+## Regresión Nivel-nivel
+
+* En economía, cuando decimos por niveles nos referimos a que están en las unidades continuas de interés
+  + PIB de 100 billones
+  + Salario de 35 mil 
+
+\[y_i=\beta_0+\beta_1x_i+\varepsilon_i\]  
+
+* $\text{unidades} \ \beta_1= \frac{\text{unidades} \ y}{\text{unidades} \ x}$
+
+##
+
+* Supongamos una regresión de 
+
+
+Salarios~edad+sexo(1=mujer)+percentil de ingreso de los padres
+
+* Para cada año adicional, esperamos que el salario suba en $\hat{\beta_{edad}}$ pesos
+
+* Por cada percentil del ingreso de los padres adicional, esperamos que el salario cambien en $\hat{\beta_{Percentil \ padres}}$ **puntos porcentuales** 
+
+##
+
+* Para dummies, recuerden que la comparativa se hace con respecto al intercepto. El intercepto es el promedio para los i cuya dummy es 0
+
+* En promedio, esperamos que los salarios sean $\hat{\beta_{sexo}}$ pesos mayores/menores para las mujeres
+
+## Regresiones log-nivel 
+
+\[ln(y_i)=\beta_0+\beta_1 x_i+\varepsilon_i\]
+
+* Evidentemente, lo que esté dentro de los logaritmos debe ser 
+positivo
+* No se recomienda añadir números para que sea positivo
+* **Si incrementas x por uno, esperamos que y cambie por $100 \ \beta_1$ porciento**
+* Si x cambia (en unidades de x), en qué porcentaje cambia y 
+  + Esta interpretación es solo válida para números pequeños de $\beta$
+  + Técnicamente, $\% \Delta y= 100 (e^{\beta_1}-1)$
+
+## 
+
+ln(Salarios)~edad+sexo(1=mujer)+percentil de ingreso de los padres
+
+* Para cada año adicional, esperamos que el salario suba $100 \ \hat{\beta_{edad}}$ porciento
+
+* En promedio, esperamos que los salarios sean $100\ \hat{\beta_{sexo}}$ porciento mayores/menores para las mujeres
+
+* Por cada percentil del ingreso de los padres adicional, esperamos que el salario cambien en $100 \ \hat{\beta_{Percentil \ padres}}$ porciento
+
+## Regresión nivel-log
+
+\[y_i=\beta_0+ \beta_1 \ \ln(x_i)+\varepsilon_i\]
+
+* Si x incrementa por **uno porciento**. esperamos que y cambie por $\frac{\beta_1}{100}$ unidades de y
+
+## 
+
+Salarios~ln(edad)+sexo(1=mujer)+ ln(percentil de ingreso de los padres)
+
+* Para un incremento de 1% en la edad, esperamos que el salario suba $\frac{\hat{\beta_{edad}}}{100}$ pesos
+
+* En promedio, esperamos que los salarios sean $\hat{\beta_{sexo}}$ pesos mayores/menores para las mujeres
+
+* Para un incremento de 1%  en el  percentil del ingreso de los padres, esperamos que el salario cambien en $\frac{\hat{\beta_{Percentil \ padres}}}{100}$ pesos
+
+## Log-log 
+
+\[ln(y_i)=\beta_0+\beta_1 \ ln(x_i) +\varepsilon_i\]
+
+* Si incrementa x por **uno porciento**, esperamos que y cambie en $\beta_1$ **porciento**
+
+##
+
+ln(Salarios)~ln(edad)+sexo(1=mujer)+ ln(percentil de ingreso de los padres)
+
+* Para un incremento de 1% en la edad, esperamos que el salario cambie en  $\hat{\beta_{edad}}$ porciento
+
+* En promedio, esperamos que los salarios sean $\hat{\beta_{sexo}}$ porciento pesos mayores/menores para las mujeres
+
+* Para un incremento de 1%  en el  percentil del ingreso de los padres, esperamos que el salario cambien en $\hat{\beta_{Percentil \ padres}}$ porciento
+
+## ¿Por qué los logaritmos?
+
+* Los logaritmos son ampliamente utilizados en economía
+* Su utilidad está en quitar unidades y hacer resultados comparables-> Pues hacen que el coeficiente se interprete con porcentajes 
+* Si tenemos variables en diferentes monedas, con diferentes inflaciones, los podemos logaritmar y hacer los coeficientes comparables
+* En una regresión log-log los coeficientes son **elasticidades**
+ 
+
+

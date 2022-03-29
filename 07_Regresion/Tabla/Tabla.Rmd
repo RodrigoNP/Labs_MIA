@@ -1,0 +1,33 @@
+---
+title: "Untitled"
+author: "Rodrigo Negrete Pérez"
+date: "25/3/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+```{r, include=FALSE}
+source('C:/Users/rodri/OneDrive - INSTITUTO TECNOLOGICO AUTONOMO DE MEXICO/Labs MIA/07_Regresion/Regresion_rs.R')
+library(xtable)
+```
+
+
+```{r, results='asis', message=FALSE, warning=FALSE}
+stargazer(modelo1, modelo2, modelo3,
+                 type = 'latex',
+                 header = F,
+                out.header = F,
+                 title = 'Democracia y desigualdad',
+                 column.labels = c('Regresión con controles', 'Controles fijos y Errores agrupados'),
+                 column.separate = c(2,1),
+                 covariate.labels = c('Democracia',
+                                      'Población',
+                                      'PIB',
+                                      'Empleo',
+                                      '(Poblaicón*Empleo)'))
+```
+
+
