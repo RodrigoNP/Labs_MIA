@@ -1,0 +1,1859 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usetheme[]{CambridgeUS}
+\usecolortheme{beaver}
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Regresión Lineal},
+  pdfauthor={Rodrigo Negrete Pérez},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Regresión Lineal}
+\author{Rodrigo Negrete Pérez}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}[allowframebreaks]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+\hypertarget{regresiuxf3n-a-la-media}{%
+\section{Regresión a la Media}\label{regresiuxf3n-a-la-media}}
+
+\begin{frame}{Chicharitos}
+\protect\hypertarget{chicharitos}{}
+\begin{itemize}
+\tightlist
+\item
+  En 1889 Galton popularizó la ``regresión a la media''
+\item
+  Las vainas de chícharos:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Las extremadamente largas tenían hijas largas, pero no tanto como
+    sus padres
+  \item
+    Las extremadamente pequeñas tenían hijas pequeñas, pero no tanto
+    como su padres
+  \item
+    Los hijos revertían, regresaban a un promedio
+  \end{itemize}
+\item
+  Queremos una línea que, con los datos, prediga la longitud promedio de
+  los hijos, dada la de los padres
+\end{itemize}
+\end{frame}
+
+\begin{frame}{FEC (CEF)}
+\protect\hypertarget{fec-cef}{}
+\begin{itemize}
+\tightlist
+\item
+  El objeto matemático es la \emph{Función de Esperanza Condicional}
+\item
+  CEF en inglés
+\item
+  Nos da el promedio de Y dado un conjunto de valores de X
+  (condicionando por X)
+\end{itemize}
+
+\[E[Y_i | X_i=x] \]
+
+\begin{itemize}
+\tightlist
+\item
+  Es una curva que puede tener cualquier forma
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Propiedad de desomposición de la FEC}
+\protect\hypertarget{propiedad-de-desomposiciuxf3n-de-la-fec}{}
+\begin{itemize}
+\tightlist
+\item
+  Puedo descomponer una una variable aleatoria en su FEC y un término de
+  error independiente a X
+\end{itemize}
+
+\[Y_i=E[ Y_i | X_i] + \varepsilon_i \]
+
+\begin{itemize}
+\item
+  \(\varepsilon_i\) debe ser ortogonal (independiente) y por ende no
+  puede estar correlacionado con \(X_i\)
+\item
+  Cualquier variable aleatoria puede ser explicada por su FEC y un
+  sobrante independiente a \(X_i\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Propiedades de Predicción de la FEC}
+\protect\hypertarget{propiedades-de-predicciuxf3n-de-la-fec}{}
+Sea \(m(X_i)\) cualquier función de \(X_i\). La FEC resuelve
+
+\[ E[Y_i | X_i] =  \underset{m(X_i)}{\operatorname{argmin}} E[(Y_i-m(X_I))^2]\]
+
+La FEC es el mejor predictor de \(Y_i\) dado \(X_i\), pues minimiza el
+promedio de los cuadrados de los errores.
+\end{frame}
+
+\begin{frame}{Teorema ANOVA}
+\protect\hypertarget{teorema-anova}{}
+\begin{itemize}
+\tightlist
+\item
+  Podemos descomponer la varianza de \(y_i\) en la varianza de la FEC y
+  la del residuo
+\end{itemize}
+
+\[ Var(Y_i)= Var(E[ Y_i | X_i]) + Var(\varepsilon_i) \]
+
+\begin{itemize}
+\tightlist
+\item
+  Nótese que seguimos asumiendo que \(X_i\) y \(\varepsilon_i\) son
+  ortogonales
+\end{itemize}
+\end{frame}
+
+\hypertarget{gdp}{%
+\section{GDP}\label{gdp}}
+
+\begin{frame}{¿Qué queremos?}
+\protect\hypertarget{quuxe9-queremos}{}
+\begin{itemize}
+\item
+  Nos interesa la relación entre una variable X y una variable Y
+\item
+  Un tratamiento y un outcome
+\item
+  En general, no sabemos ``la verdad'', las relaciones auténticas
+\item
+  El objetivo es acercarnos a ``la verdad'' a través de los datos
+\item
+  Con datos simulados sí que sabemos la verdad
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Proceso de Generación de Datos (GDP)}
+\protect\hypertarget{proceso-de-generaciuxf3n-de-datos-gdp}{}
+\begin{itemize}
+\item
+  n observaciones con dos variables: (\(x_1, x_2 , ..., x_n\)) y
+  (\(y_1, y_2, ..., y_n\))
+\item
+  GDP es como un caja negra: entra una x, pasa algo, y se convierte en
+  una y
+\item
+  Definamos un GDP
+\end{itemize}
+
+\[ y_i=\alpha + \beta x_i + \varepsilon_i \]
+
+\begin{itemize}
+\tightlist
+\item
+  reconocemos que hay procesos estocásticos (\(\varepsilon_i\))
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section}{}
+Construyamos un df. Supongamos:
+
+\begin{itemize}
+\tightlist
+\item
+  \(N=10,000\)
+\item
+  \(\alpha = 5\)
+\item
+  \(\beta= 4\)
+\item
+  \(x \sim N(20, 15)\)
+\item
+  \(\epsilon \sim N(5,2)\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-1}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2022}\NormalTok{)}
+\NormalTok{n}\OtherTok{\textless{}{-}}\DecValTok{10000}
+\NormalTok{alpha}\OtherTok{=}\DecValTok{5}
+\NormalTok{beta}\OtherTok{=} \DecValTok{4}
+\NormalTok{x}\OtherTok{\textless{}{-}}\FunctionTok{rnorm}\NormalTok{(n,}\DecValTok{50}\NormalTok{,}\DecValTok{15}\NormalTok{)}
+\NormalTok{e}\OtherTok{\textless{}{-}}\FunctionTok{rnorm}\NormalTok{(n,}\DecValTok{5}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\NormalTok{y}\OtherTok{\textless{}{-}}\NormalTok{alpha}\SpecialCharTok{+}\NormalTok{ beta}\SpecialCharTok{*}\NormalTok{x }\SpecialCharTok{+}\NormalTok{ e}
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(x,y)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-2}{}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ & x & y \\ 
+  \hline
+1 & 63.50 & 266.21 \\ 
+  2 & 32.40 & 140.07 \\ 
+  3 & 36.54 & 155.11 \\ 
+  4 & 28.33 & 122.40 \\ 
+  5 & 45.03 & 191.20 \\ 
+  6 & 6.49 & 36.62 \\ 
+   \hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-3}{}
+\begin{itemize}
+\tightlist
+\item
+  En nuestro caso, el GDP es la ``verdad''
+\item
+  Entonces, ¿como podemos inferir la verdad a partir de la muestra?
+\end{itemize}
+\end{frame}
+
+\hypertarget{mco}{%
+\section{MCO}\label{mco}}
+
+\begin{frame}{Mínimos Cuadrados Ordinarios (MCO)}
+\protect\hypertarget{muxednimos-cuadrados-ordinarios-mco}{}
+\begin{itemize}
+\item
+  MCO minimiza las sumas de los cuadrados de los residuos
+\item
+  Se publicó el procedimiento en 1805 por Legendre
+\item
+  Gauss ya lo había empleado
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Le pareció tan trivial que lo publicó hasta 1809
+  \item
+    Desarrolló algunos teoremas para el procedimiento
+  \end{itemize}
+\item
+  OLS en inglés
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-4}{}
+\begin{itemize}
+\tightlist
+\item
+  Queremos estimar la línea \(\hat{\alpha_i}+ \hat{\beta} X_i\) que
+  mejor se ajuste a los datos.
+\item
+  \(\hat{y_i}=\hat{\alpha_i}+ \hat{\beta} X_i\) es el valor ajustado
+  para i
+\item
+  el residuo \(\hat{\varepsilon_i}=yi-\hat{y_i}\) es la distancia
+  vertical entre el valor real y nuestra línea
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-5}{}
+\begin{itemize}
+\tightlist
+\item
+  Queremos que esa distancia, en general, sea muy chiquita
+\item
+  La cuadramos \(\hat{u_i}^2\)
+\item
+  Queremos que todos los residuos sean pequeños, entonces minimizamos :
+\end{itemize}
+
+\[\underset{\hat{\alpha}, \hat{\beta}}{\operatorname{argmin}}\sum_{n=1}^{n} \hat{\varepsilon_i}^2= \sum_{n=1}^{n} (yi-\hat{y_i})^2= \sum_{n=1}^{n} (y_i - \hat{\alpha_i}- \hat{\beta} X_i)^2  \]
+
+\begin{itemize}
+\tightlist
+\item
+  Escogemos \(\alpha\) y \(\beta\) que minimicen la suma de residuos
+  cuadrados
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-6}{}
+Usando Cálculo obtenemos que
+
+\[\hat{\alpha}= \bar{y_i} - \hat{\beta} \bar{x_i}\]
+\[ \hat{\beta}= \frac{\text{Cov}(x,y)}{\text{Var}(x)}\]
+\end{frame}
+
+\begin{frame}{Regresión Multivariada}
+\protect\hypertarget{regresiuxf3n-multivariada}{}
+\begin{itemize}
+\tightlist
+\item
+  Con múltiples variables es muy similar, solo que tenemos que trabajar
+  con matrices
+\item
+  Resolvemos el mismo problema, solo que con \((K \times 1)\) regresores
+  y una matriz b de \((K \times 1)\) coeficientes
+\end{itemize}
+
+\[\underset{\hat{b}}{\operatorname{argmin}} E[(y_i-X_i' b)^2] \]
+
+C.P.O
+
+\[ E[X_i(y_i-X_i')b]=0\]
+
+\begin{itemize}
+\tightlist
+\item
+  Notémos que, por construcción, \(\text{Cov}(x,\hat{\varepsilon})=0\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-7}{}
+Obtenemos
+
+\[ b= E[X_iX_i']^{-1} E[X_iy_i]\]
+
+\begin{itemize}
+\tightlist
+\item
+  A excepción del intercepto
+\end{itemize}
+
+\[\hat{\beta_k}= \frac{\text{Cov}(x_{ki},y)}{\text{Var}(x_{ki})} \]
+\end{frame}
+
+\begin{frame}[fragile]{Regresión en R}
+\protect\hypertarget{regresiuxf3n-en-r}{}
+En R, para hacer una regresión usamos la función \textbf{lm()}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lm}\NormalTok{(y}\SpecialCharTok{\textasciitilde{}}\NormalTok{x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Coefficients:
+## (Intercept)            x  
+##      10.081        3.999
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-8}{}
+\begin{itemize}
+\tightlist
+\item
+  Podemos usar la función summary para sustraer información del modelo
+\item
+  Podemos guardar el modelo como cualquier objeto
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm}\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(y}\SpecialCharTok{\textasciitilde{}}\NormalTok{x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  Para luego sustraer elementos del modelo, y operar con ellos como
+  cualquier vector
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(lm)}\SpecialCharTok{$}\NormalTok{coefficients}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Estimate  Std. Error   t value Pr(>|t|)
+## (Intercept) 10.081468 0.068891141  146.3391        0
+## x            3.998942 0.001323177 3022.2271        0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{residuals}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(lm)}\SpecialCharTok{$}\NormalTok{residuals}
+\FunctionTok{head}\NormalTok{(residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          1          2          3          4          5          6 
+##  2.1878726  0.4209895 -1.0812246 -0.9855222  1.0258499  0.5872052
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-9}{}
+\begin{itemize}
+\tightlist
+\item
+  R tiene funciones base para sacar valores predichos
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fitted.values}\OtherTok{\textless{}{-}}\FunctionTok{fitted}\NormalTok{(lm)}
+\FunctionTok{head}\NormalTok{(fitted.values)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1         2         3         4         5         6 
+## 264.02280 139.64644 156.19369 123.38141 190.17301  36.03686
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Mecánicas de MCO}
+\protect\hypertarget{mecuxe1nicas-de-mco}{}
+Por el proceso matemático, las regresiones siempre cumplen algunas
+propiedades
+
+\begin{itemize}
+\tightlist
+\item
+  Suma de residuos es igual a 0
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sum}\NormalTok{(residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -4.541506e-13
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  De hecho, para eso es el intercepto
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-10}{}
+\begin{itemize}
+\tightlist
+\item
+  \(Cov(X,\hat{\varepsilon_i})=0\)
+\item
+  \(Cov(\hat{Y_i},\hat{\varepsilon_i})=0\)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cov}\NormalTok{(x, residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -1.259569e-15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cov}\NormalTok{(fitted.values, residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -6.45257e-16
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-11}{}
+\begin{itemize}
+\tightlist
+\item
+  La propiedad anova
+\end{itemize}
+
+\[\sum Y_i^2=\sum\hat{Y_i^2}+ \sum \hat{\varepsilon_i^2}\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sum}\NormalTok{(y}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{==}\FunctionTok{sum}\NormalTok{(fitted.values}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{+}\FunctionTok{sum}\NormalTok{(residuals}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(y)}\SpecialCharTok{{-}}\FunctionTok{mean}\NormalTok{(fitted.values)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-12}{}
+\begin{itemize}
+\tightlist
+\item
+  Estas propiedades de la regresión se cumplen sin importar la relación
+  que haya entre las verdaderas variables
+\item
+  No concluyan que su modelo es bueno porque se cumple lo anterior:
+  siempre se cumple
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-13}{}
+\begin{itemize}
+\tightlist
+\item
+  Supongamos un PGD donde \(Y=\beta X+\varepsilon\) ,
+  \(\varepsilon \sim N(-.4,1)\), \(X \sim N(-.1,4)\),
+  \(cov(\varepsilon,X)=-.85\) y \(\beta=-3\). Tenemos una muestra de
+  tamaño 251
+\item
+  X y \(\varepsilon\) están covariando
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-14}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(MASS)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2022}\NormalTok{)}
+\NormalTok{n}\OtherTok{\textless{}{-}}\DecValTok{251}
+\NormalTok{beta}\OtherTok{\textless{}{-}}\SpecialCharTok{{-}}\DecValTok{3}
+\NormalTok{sigma}\OtherTok{\textless{}{-}}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\SpecialCharTok{{-}}\NormalTok{.}\DecValTok{85}\NormalTok{,}\SpecialCharTok{{-}}\NormalTok{.}\DecValTok{85}\NormalTok{,}\DecValTok{1}\NormalTok{),}\DecValTok{2}\NormalTok{)}
+\NormalTok{mu}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{.}\DecValTok{1}\NormalTok{,}\SpecialCharTok{{-}}\NormalTok{.}\DecValTok{4}\NormalTok{)}
+\NormalTok{data}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(}\FunctionTok{mvrnorm}\NormalTok{(}\AttributeTok{n=}\NormalTok{n, mu, sigma))}
+\NormalTok{y1}\OtherTok{\textless{}{-}}\NormalTok{data}\SpecialCharTok{$}\NormalTok{X1}\SpecialCharTok{*}\NormalTok{beta}\SpecialCharTok{+}\NormalTok{data}\SpecialCharTok{$}\NormalTok{X2}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-15}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm\_biased}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(y1}\SpecialCharTok{\textasciitilde{}}\NormalTok{X1,}
+                      \AttributeTok{data =}\NormalTok{ data))}
+
+\FunctionTok{cov}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X1, lm\_biased}\SpecialCharTok{$}\NormalTok{residuals)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -2.937949e-17
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  A pesar de que X y \(\varepsilon\) están covariando, la covarianza
+  entre los residuos y X sigue siendo 0.
+\end{itemize}
+\end{frame}
+
+\hypertarget{inferencia-estaduxedstica}{%
+\section{Inferencia Estadística}\label{inferencia-estaduxedstica}}
+
+\begin{frame}{Inferencia Estadística}
+\begin{itemize}
+\item
+  Los valores de los coeficientes siempre tienen una distribución
+  asintótica muestral si asumimos que contamos con una muestra aleatoria
+\item
+  Su distribución se deriva de
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ley de los Grandes Números: Momentos muestrales convergen en
+    probabilidad a los momentos poblacionales
+  \item
+    Teorema Central del Límite: Los momentos muestrales se distribuyen
+    asintóticamente normal
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-16}{}
+\begin{itemize}
+\tightlist
+\item
+  Los coeficentes de distribuyen asintóticamente normal, pues son
+  momentos muestrales
+\end{itemize}
+
+\[ b= E[X_iX_i']^{-1} E[X_iy_i]\]
+
+\begin{itemize}
+\tightlist
+\item
+  Es inmediato que \(E[b]=\beta\)
+\item
+  Si sustituimos \(Y_i\) como \(X'_i\beta+\varepsilon_i\), aplicamos la
+  Esperanza y Varianza, y nos mantenemos con nuestro supuesto de
+  \(Cov(X,\varepsilon_i)=0\), la matriz de varianzas y covarianzas es
+\end{itemize}
+
+\[E[X_iX'_i]^{-1} E[X_i X'_i e_i^2] E[X_iX'_i]^{-1}\]
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-17}{}
+\begin{itemize}
+\tightlist
+\item
+  El \textbf{error estándar} de un coeficiente es su desviación
+  estándar.
+\item
+  R nos arroja la su error estándar y la construcción del estadístico de
+  prueba t
+\item
+  Usamos el t porque sustituimos la varianza del error con la del
+  residuo
+\end{itemize}
+
+\[\frac{b_j-\beta_j}{S \sqrt{(X'X)^{-1}}}\sim t(n-k-1)\]
+
+\[\frac{b_j-\beta_j}{Se(b_j)} \sim t(n-k-1)\]
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-18}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.7729 -1.3514  0.0246  1.3539  7.5819 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 10.081468   0.068891   146.3   <2e-16 ***
+## x            3.998942   0.001323  3022.2   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.978 on 9998 degrees of freedom
+## Multiple R-squared:  0.9989, Adjusted R-squared:  0.9989 
+## F-statistic: 9.134e+06 on 1 and 9998 DF,  p-value: < 2.2e-16
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Pvalues}
+\protect\hypertarget{pvalues}{}
+\begin{itemize}
+\tightlist
+\item
+  R arroja automáticamente los pvalues
+\item
+  En este contexto, se define como la probalidad de obtener el
+  coeficiente que obtuve, asumiendo la hipótesis nula
+\item
+  Asumir la hipótesis nula significa que el efecto verdadero es 0,
+  entonces \(\beta = 0\)
+\item
+  Si asumimos esto, conocemos perfecetamente la distribución de del
+  coeficiente \(b_j\)
+\end{itemize}
+
+\[\frac{b_j}{Se(b_j)}\]
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-19}{}
+\begin{itemize}
+\tightlist
+\item
+  En nuestro contexto, el pvalue de la x es muy pequeño, muy cercano a
+  0.
+\item
+  Es decir, asumiendo que no hay un efecto verdadero (que la esperanza
+  del coeficiente es 0), la probabilidad que el coeficiente me haya dado
+  3.99 solo por cuestiones muestrales (de chiripa) es de 0
+\item
+  Como obtuve 3.99, es muy poco probable que haya sido por cuestiones
+  muestrales, seguro lo obtuve porque el efecto verdadero es distinto de
+  0
+\item
+  Si regresamos a nuestro PGD, el efecto verdadero es de 4
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regla de dedo}
+\protect\hypertarget{regla-de-dedo}{}
+\begin{itemize}
+\tightlist
+\item
+  Una regla de dedo es que el valor del coeficiente (en valor absoluto)
+  tiene que ser más grande que el doble del valor estándar para que sea
+  estidísticamente significativo al 5\%
+\end{itemize}
+
+\[ b_j > 2 Se (b_j)\] \[\frac{b_j}{Se(b_j)} > 2\]
+
+\begin{itemize}
+\tightlist
+\item
+  ¿Por qué? Por una prueba de hipótesis nula de dos colas
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-20}{}
+\begin{itemize}
+\tightlist
+\item
+  Comúnmente hacemos una prueba de dos colas con el 5\% de probabilidad
+  de ambos lados, o 2.5 de cada lado.
+\item
+  Alfa=.05
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{alfa}\OtherTok{\textless{}{-}}\NormalTok{.}\DecValTok{05}
+\FunctionTok{qt}\NormalTok{(}\AttributeTok{p=}\NormalTok{alfa}\SpecialCharTok{/}\DecValTok{2}\NormalTok{, n}\DecValTok{{-}2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -1.969537
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Recordemos que la t es simétrica
+\item
+  Es decir, en una distribución t, el 5 por ciento de la probabilidad se
+  acumula antes del -1.96 y después del 1.96 (2.5\% de cada lado)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-21}{}
+\begin{itemize}
+\tightlist
+\item
+  Para rechazar la hipótesis nula con un nivel de confianza del 5\%,
+  necesitamos que el estadístico t sea más grande que 1.96 (en valor
+  absoluto)
+\item
+  Lo anterior sucede cuando \(b_j > 2 Se (b_j)\)
+\item
+  Para ver si un coeficiente es significativo al 5\% podemos usar esta
+  heurística
+\end{itemize}
+\end{frame}
+
+\hypertarget{justificaciuxf3n-de-la-regresiuxf3n}{%
+\section{Justificación de la
+Regresión}\label{justificaciuxf3n-de-la-regresiuxf3n}}
+
+\begin{frame}{FEC y Regresión}
+\protect\hypertarget{fec-y-regresiuxf3n}{}
+\begin{itemize}
+\tightlist
+\item
+  Pasamos un rato hablando de la FEC y sus propiedades
+\item
+  En resumen, la FEC es el mejor predictor de la distribución de una
+  variable aleatoria, dado un conjunto de controles X
+\item
+  La FEC y la regresión guardan una relación cercana
+\item
+  La línea de regresión es el mejor estimador lineal de la CEF
+\item
+  De hecho, si la FEC es lineal, es la regresión
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Pruebas de hipótesis}
+\protect\hypertarget{pruebas-de-hipuxf3tesis}{}
+\begin{itemize}
+\tightlist
+\item
+  Con supuestos mínimos podemos obtener errores estándar de los
+  coeficientes
+\item
+  De ahí que podamos contruir pruebas de hipótesis para ver si lo que
+  obtuvimos es estadísticamente significativo
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Insesgados y eficientes}
+\protect\hypertarget{insesgados-y-eficientes}{}
+\begin{itemize}
+\tightlist
+\item
+  Si asumimos que el modelo está correctamente especificado, los
+  estimadores de MCO son insesgados
+\item
+  Bajo los supuestos de \(E[\varepsilon]=0\) , también son eficientes.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Controles}
+\protect\hypertarget{controles}{}
+\begin{itemize}
+\tightlist
+\item
+  Es muy fácil añadir controles
+\item
+  Muy similar a hacer matching (lo veremos más adelante)
+\end{itemize}
+\end{frame}
+
+\hypertarget{inferencia-casual-y-regresiuxf3n}{%
+\section{Inferencia casual y
+regresión}\label{inferencia-casual-y-regresiuxf3n}}
+
+\begin{frame}{Asosiación Estadística}
+\protect\hypertarget{asosiaciuxf3n-estaduxedstica}{}
+\begin{itemize}
+\tightlist
+\item
+  Sin importar qué, el coeficiente de una regresión siempre es igual a
+\end{itemize}
+
+\[\hat{\beta_k}= \frac{\text{Cov}(x_{ki},y)}{\text{Var}(x_{ki})} \]
+
+\begin{itemize}
+\tightlist
+\item
+  Es decir, siempre podremos calcular la covarianza entre dos variables
+  usando una regresión
+\item
+  MCO pondera por la varianza, asigna más peso a las observaciones que a
+  una x dada tienen mayor información (lo podremos ver más fácilmente
+  cuando veamos matching o controles)
+\item
+  Es muy útil para ver asociaciones estadísticas en datos panel.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Interpretación Causal}
+\protect\hypertarget{interpretaciuxf3n-causal}{}
+\begin{itemize}
+\tightlist
+\item
+  Una regresión es causal cuando la FEC que estima es causal
+\item
+  Para derivar las propiedades de la FEC utilizamos matemáticas en las
+  que venían implícitos muchos supuestos, pero hicimos uno más claro que
+  \(\varepsilon\) debe ser independiente a X
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Potential Outcomes}
+\protect\hypertarget{potential-outcomes}{}
+\begin{itemize}
+\tightlist
+\item
+  Recordemos el modelo de PO
+\item
+  Tenemos un tratamiento dicotómico
+\end{itemize}
+
+\begin{equation}
+Y_i=
+  \begin{cases}
+  Y_{1i} , & \text{si}\ t=1\\
+  Y_{0i} , & \text{si}\ t=0
+  \end{cases}
+\end{equation}
+
+\begin{itemize}
+\tightlist
+\item
+  Asumimos dos PO, pero solo observamos uno
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Modelos saturados}
+\protect\hypertarget{modelos-saturados}{}
+\begin{itemize}
+\tightlist
+\item
+  Los modelos saturados son aquellos con variables explicativas
+  discretas, donde el modelo incluye un parámetro separado para todas
+  las posibles combinaciones que se puedan tomar por estas variables
+  explicativas
+\item
+  Nuestro tratamiento es una Dummy-\textgreater{} una variable que solo
+  puede tomar los valores de 0 o 1
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-22}{}
+\begin{itemize}
+\tightlist
+\item
+  Cuando las variables son dummies, los coeficientes asociados tienen
+  una interpretación particular
+\item
+  supongamos que tenemos un modelo solo con dos dummies
+\item
+  El modelo saturado es
+\end{itemize}
+
+\[Y_i=\alpha+ \beta x_{1i}+ \gamma x_{2i}+ \delta(x_{1i}x_{2i})+\varepsilon_i \]
+* Es decir, añadimos las dummies y un término de interacción para cada
+posible combinación
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-23}{}
+\[Y_i=\alpha+ \beta x_{1i}+ \gamma x_{2i}+ \delta(x_{1i}x_{2i})+\varepsilon_i \]
+
+Entonces, la interpretación de los coeficientes es
+
+\[E[Y_i| x_{1i}=0, x_{2i}=0]=\alpha\]
+\[E[Y_i| x_{1i}=1, x_{2i}=0]=\alpha+\beta\]
+\[E[Y_i| x_{1i}=0, x_{2i}=1]=\alpha+\gamma\]
+\[E[Y_i| x_{1i}=1, x_{2i}=1]=\alpha+\beta+ \gamma+ \delta\]
+\end{frame}
+
+\begin{frame}{Efecto del tratamiento con una regresión}
+\protect\hypertarget{efecto-del-tratamiento-con-una-regresiuxf3n}{}
+\begin{itemize}
+\tightlist
+\item
+  Si nuestra regresión es de PO y un tratamiento dummy
+\end{itemize}
+
+\[Y_{observada}= \alpha+ \beta T_i+ \varepsilon_i\]
+
+\[E[Y_{0i}| T_i=0]=\alpha\] \[E[Y_{1i}| T_i=1]=\alpha+\beta\]
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-24}{}
+\begin{itemize}
+\tightlist
+\item
+  Si recuerdan, \(CI=E[Y_{1i}| T_i=1]-E[Y_{0i}| T_i=0]\)
+\item
+  Entonces,
+\end{itemize}
+
+\[CI=E[Y_{1i}| T_i=1]-E[Y_{0i}| T_i=0]=\alpha+\beta-\alpha=\beta\]
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-25}{}
+\begin{itemize}
+\tightlist
+\item
+  El modelo de PO es una herramienta que nos ayuda a entender cuándo una
+  regresión tiene interpretación causal. Si recordamos
+\end{itemize}
+
+\begin{equation}
+\begin{aligned}
+ E[Y_{1i} |T_i=1]-E[Y_{0i}|T_i=0]= E[Y_{1i} |T_i=1] - E[Y_{0i}|T_i=1] \\ 
+ \color{blue}{+ E[Y_{0i}|T_i=1]-E[Y_{0i}|T_i=0]} \\
+\end{aligned}
+\end{equation}
+
+\[CI=ATT+Selection \ bias\]
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-26}{}
+\begin{itemize}
+\tightlist
+\item
+  La \(\beta\) de la regresión va a estar estimando el efecto verdadero
+  del tratamiento cuando no hay sesgo de selección
+\item
+  En ese caso, el CI va a estimar al ATT, el cual debería ser muy
+  similar al ATE y los grupos tratados y control son muy similares
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conditional Independence Assumption CIA}
+\protect\hypertarget{conditional-independence-assumption-cia}{}
+\begin{itemize}
+\tightlist
+\item
+  También llamado Unconfoundedness o Selection-on-observables
+\end{itemize}
+
+\[\{Y_{0i}, Y_{1i}\} \amalg T_i |X_i\]
+
+\begin{itemize}
+\tightlist
+\item
+  En palabras, una vez que controlemos por lo que queramos, el
+  tratamiento debe ser independiente de los potencial outcomes
+\item
+  Condicionando por lo que quieras, T debe ser cuasialeatorio
+\item
+  Condicionar por X elimina el sesgo de selección
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-27}{}
+\begin{itemize}
+\tightlist
+\item
+  Hay otros supuestos que están implícitos en las mates que utilizamos
+  para las propiedades de la FEC y de MCO
+\item
+  El supuesto grande es CIA
+\item
+  Si el tratamiento es aleatorio, nuestra regresión estima el ATE
+\end{itemize}
+\end{frame}
+
+\hypertarget{variables-omitidas-matching-y-controles}{%
+\section{Variables Omitidas, Matching y
+Controles}\label{variables-omitidas-matching-y-controles}}
+
+\begin{frame}{Datos observacionales}
+\protect\hypertarget{datos-observacionales}{}
+\begin{itemize}
+\tightlist
+\item
+  El problema de las ciencias sociales es que trabajamos con datos
+  observacionales
+\item
+  En general, no podemos hacer muchos experimentos
+\item
+  Los individuos se autoseleccionan, creando sesgo
+\item
+  Si los individuos se autoseleccionan, estamos comparando individuos
+  que no son comparables
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variables omitidas}
+\protect\hypertarget{variables-omitidas}{}
+\begin{itemize}
+\tightlist
+\item
+  Una variables omita es aquella que está correlacionada con X y
+  simultaneamente correlacionada con Y
+\item
+  Si está correlacionada con X, viola CIA
+\item
+  Regresemos al ejemplo de potential outcomes: Salarios
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-28}{}
+\begin{itemize}
+\tightlist
+\item
+  Nuestra Y sigue siendo los salarios
+\item
+  Pensemos en que nuestro tratamiento es un programa de entrenamientos
+\end{itemize}
+
+\[Y_{1i}= \alpha+ \beta T_i+ \gamma Mujer_i+ \varepsilon_i\]
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-29}{}
+\begin{itemize}
+\tightlist
+\item
+  Supongamos que el efecto del programa es \(\beta=5\) y \(\alpha=10\)
+\item
+  Supongamos \(\varepsilon_i\sim N(2,5)\)
+\item
+  Supongamos que las mujeres ganan en promedio 2 menos
+\item
+  Supongamos que las mujeres tienen una mayor probabilidad de tratarse
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Si es mujer, la probabilidad de que se trate es de .9
+  \item
+    Si es hombre, .4
+  \end{itemize}
+\item
+  ¡Simulemos!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-30}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2022}\NormalTok{)}
+\NormalTok{n}\OtherTok{\textless{}{-}}\DecValTok{10000}
+\NormalTok{i}\OtherTok{\textless{}{-}}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n}
+\NormalTok{beta}\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{alpha}\OtherTok{\textless{}{-}}\DecValTok{10}
+\NormalTok{gamma}\OtherTok{\textless{}{-}}\SpecialCharTok{{-}}\DecValTok{2}
+\NormalTok{e}\OtherTok{\textless{}{-}}\FunctionTok{rnorm}\NormalTok{(n, }\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{sex}\OtherTok{\textless{}{-}}\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{), n, }\AttributeTok{replace =}\NormalTok{ T)}
+\NormalTok{t}\OtherTok{\textless{}{-}}\FunctionTok{ifelse}\NormalTok{(sex}\SpecialCharTok{==}\DecValTok{1}\NormalTok{, }\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{9}\NormalTok{), }\DecValTok{0}\NormalTok{)), }\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{6}\NormalTok{))))}
+\NormalTok{y}\OtherTok{\textless{}{-}}\NormalTok{alpha}\SpecialCharTok{+}\NormalTok{beta}\SpecialCharTok{*}\NormalTok{t}\SpecialCharTok{+}\NormalTok{gamma}\SpecialCharTok{*}\NormalTok{sex}\SpecialCharTok{+}\NormalTok{e}
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(i,sex,t,y)}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-31}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2022}\NormalTok{)}
+\NormalTok{beta\_biased}\OtherTok{\textless{}{-}}\ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (x }\ControlFlowTok{in}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5000}\NormalTok{)) \{}
+\NormalTok{n}\OtherTok{\textless{}{-}}\DecValTok{10000}
+\NormalTok{i}\OtherTok{\textless{}{-}}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n}
+\NormalTok{beta}\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{alpha}\OtherTok{\textless{}{-}}\DecValTok{10}
+\NormalTok{gamma}\OtherTok{\textless{}{-}}\SpecialCharTok{{-}}\DecValTok{2}
+\NormalTok{e}\OtherTok{\textless{}{-}}\FunctionTok{rnorm}\NormalTok{(n, }\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{sex}\OtherTok{\textless{}{-}}\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{), n, }\AttributeTok{replace =}\NormalTok{ T)}
+\NormalTok{t}\OtherTok{\textless{}{-}}\FunctionTok{ifelse}\NormalTok{(sex}\SpecialCharTok{==}\DecValTok{1}\NormalTok{, }\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{9}\NormalTok{), }\DecValTok{0}\NormalTok{)), }\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{6}\NormalTok{))))}
+\NormalTok{y}\OtherTok{\textless{}{-}}\NormalTok{alpha}\SpecialCharTok{+}\NormalTok{beta}\SpecialCharTok{*}\NormalTok{t}\SpecialCharTok{+}\NormalTok{gamma}\SpecialCharTok{*}\NormalTok{sex}\SpecialCharTok{+}\NormalTok{e}
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(i,sex,t,y)  }
+
+\NormalTok{beta\_biased[x]}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(y}\SpecialCharTok{\textasciitilde{}}\NormalTok{t))}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-32}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(beta\_biased)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.899261
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  El estimador está sesgado, tiende a subestimar el efecto del
+  tratamiento
+\item
+  El sexo es una variable omitida
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Está correlacionada con el tratamieno (o X), pues es más probable
+    que las mujeres se traten
+  \item
+    Simultáneamente, el sexo hace que las mujeres ganen menos
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-33}{}
+\begin{itemize}
+\tightlist
+\item
+  No incluir el sexo es como si esa variable se fuera al error
+\item
+  Entonces, como el sexo está correlacionado con el tratamiento, ahora
+  el error también lo estará
+\item
+  Esto incumple CIA
+\item
+  Comparamos individuos que no son comparables
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-34}{}
+\begin{itemize}
+\tightlist
+\item
+  Evidentemente, lo primero que podríamos hacer es asignar el
+  tratamiento de manera aleatoria
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2022}\NormalTok{)}
+\NormalTok{beta\_unbiased}\OtherTok{\textless{}{-}}\ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (x }\ControlFlowTok{in}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5000}\NormalTok{)) \{}
+\NormalTok{n}\OtherTok{\textless{}{-}}\DecValTok{10000}
+\NormalTok{i}\OtherTok{\textless{}{-}}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n}
+\NormalTok{beta}\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{alpha}\OtherTok{\textless{}{-}}\DecValTok{10}
+\NormalTok{gamma}\OtherTok{\textless{}{-}}\SpecialCharTok{{-}}\DecValTok{2}
+\NormalTok{e}\OtherTok{\textless{}{-}}\FunctionTok{rnorm}\NormalTok{(n, }\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{sex}\OtherTok{\textless{}{-}}\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{), n, }\AttributeTok{replace =}\NormalTok{ T)}
+\NormalTok{t}\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{),n, }\AttributeTok{replace =}\NormalTok{ T)}
+\NormalTok{y}\OtherTok{\textless{}{-}}\NormalTok{alpha}\SpecialCharTok{+}\NormalTok{beta}\SpecialCharTok{*}\NormalTok{t}\SpecialCharTok{+}\NormalTok{gamma}\SpecialCharTok{*}\NormalTok{sex}\SpecialCharTok{+}\NormalTok{e}
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(i,sex,t,y)  }
+\NormalTok{beta\_unbiased[x]}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(y}\SpecialCharTok{\textasciitilde{}}\NormalTok{t))}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-35}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(beta\_unbiased)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.999601
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  De nuevo, con datos observacionales, no podemos asignar el tratamiento
+  de manera aleatoria
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Matching}
+\protect\hypertarget{matching}{}
+\begin{itemize}
+\tightlist
+\item
+  Si el problema es que estamos comparando individuos que no son
+  comparables, qué tal si comparamos individuos que sí lo son
+\item
+  Que tal si
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Comparamos mujeres contra mujeres y vemos el efecto del tratamiento
+  \item
+    Hacemos lo mismo para los hombres
+  \item
+    Promediamos los efectos de alguna manera
+  \end{itemize}
+\item
+  Esta es la idea fundamental del Matching
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-36}{}
+\begin{itemize}
+\tightlist
+\item
+  ¡Es justo lo que hace una regresión saturada!
+\end{itemize}
+
+\[Y_{1i}= \alpha+ \beta T_i+ \gamma Mujer_i+ \varepsilon_i\]
+
+\[E[Y_i| T_{i}=0, Mujer_i=0]=\alpha\]
+\[E[Y_i| T_i=1, Mujer_i=0]=\alpha+\beta\]
+\[E[Y_i| T_i=0, Mujer_i=1]=\alpha+\gamma\]
+\[E[Y_i| T_i=1, Mujer_i=1]=\alpha+\gamma+\beta\]
+
+\begin{itemize}
+\tightlist
+\item
+  Podríamos añadir la interacción
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Si añadimos una interacción, estamos presuponiendo que el efecto del
+    programa va a ser diferente para hombres que para mujeres
+  \item
+    Por ahora, simplifiquemos el análisis
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-37}{}
+\begin{itemize}
+\tightlist
+\item
+  Podemos obtener el efecto causal viendo solo a los hombres o solo a
+  las mujeres
+\end{itemize}
+
+\[E[Y_i| T_i=1, Mujer_i=0]-E[Y_i| T_{i}=0, Mujer_i=0]=\alpha+\beta-\alpha=\beta\]
+\[E[Y_i| T_i=1, Mujer_i=1]-E[Y_i| T_{i}=1, Mujer_i=0]=\alpha+\beta+ \gamma-\alpha-\gamma=\beta\]
+
+\begin{itemize}
+\tightlist
+\item
+  Lo que hace MCO es ponderar estos dos efectos por la varianza de los
+  datos: si no hubiera hombres tratados, no asignaría efecto causal a
+  los hombres; no tendríamos con qué comparar
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-38}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2022}\NormalTok{)}
+\NormalTok{beta\_biased}\OtherTok{\textless{}{-}}\ConstantTok{NULL}
+\NormalTok{beta\_unbiased}\OtherTok{\textless{}{-}}\ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{ (x }\ControlFlowTok{in}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5000}\NormalTok{)) \{}
+\NormalTok{n}\OtherTok{\textless{}{-}}\DecValTok{10000}
+\NormalTok{i}\OtherTok{\textless{}{-}}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n}
+\NormalTok{beta}\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{alpha}\OtherTok{\textless{}{-}}\DecValTok{10}
+\NormalTok{gamma}\OtherTok{\textless{}{-}}\SpecialCharTok{{-}}\DecValTok{2}
+\NormalTok{e}\OtherTok{\textless{}{-}}\FunctionTok{rnorm}\NormalTok{(n, }\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\NormalTok{sex}\OtherTok{\textless{}{-}}\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{), n, }\AttributeTok{replace =}\NormalTok{ T)}
+\NormalTok{t}\OtherTok{\textless{}{-}}\FunctionTok{ifelse}\NormalTok{(sex}\SpecialCharTok{==}\DecValTok{1}\NormalTok{, }\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{9}\NormalTok{), }\DecValTok{0}\NormalTok{)), }\FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{6}\NormalTok{))))}
+\NormalTok{y}\OtherTok{\textless{}{-}}\NormalTok{alpha}\SpecialCharTok{+}\NormalTok{beta}\SpecialCharTok{*}\NormalTok{t}\SpecialCharTok{+}\NormalTok{gamma}\SpecialCharTok{*}\NormalTok{sex}\SpecialCharTok{+}\NormalTok{e}
+\NormalTok{df}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(i,sex,t,y)  }
+\NormalTok{beta\_biased[x]}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(y}\SpecialCharTok{\textasciitilde{}}\NormalTok{t))}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{beta\_unbiased[x]}\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(y}\SpecialCharTok{\textasciitilde{}}\NormalTok{t}\SpecialCharTok{+}\NormalTok{sex))}\SpecialCharTok{$}\NormalTok{coefficients[}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-39}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(beta\_biased)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.899261
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(beta\_unbiased)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.997775
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-40}{}
+\begin{itemize}
+\tightlist
+\item
+  CIA dice que, una vez condicionando por lo que querramos (en nuestro
+  caso el sexo), la asignación del tratamiento es cuasialeatoria
+\item
+  En nuestro caso, lo es
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Una vez que controlamos por mujer, lo que difiere es aleatorio: el
+    error
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Controlar por observables}
+\protect\hypertarget{controlar-por-observables}{}
+\begin{itemize}
+\tightlist
+\item
+  El problema es que estamos asumiendo algo: ser mujer es la única
+  variable que hace que los individuos se autoseleccionen
+\item
+  Al controlar por sexo, obtenemos grupos comparables, pues asumimos que
+  es lo único que hace a los individuos autoseleccionarse
+\item
+  En este caso, así es. No podemos argumentar lo mismo con datos
+  observacionales
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-41}{}
+\begin{itemize}
+\tightlist
+\item
+  El razonamiento se puede repetir con las variables que pensamos que
+  están correlacionadas con Y y X simultáneamente
+\item
+  Si controlamos por todas las variables que pensamos que influyen Y y X
+  simultáneamente, obtendríamos grupos comparables
+\item
+  A esta Estrategia de identificación se le conoce como regresión con
+  controles
+\item
+  La ventaja de la regrsión es que admite variables continuas
+\item
+  El problema es que no podemos hacer esto para variables no observables
+  o para las que no tenemos datos
+\end{itemize}
+\end{frame}
+
+\hypertarget{tablas-de-regresiuxf3n}{%
+\section{Tablas de regresión}\label{tablas-de-regresiuxf3n}}
+
+\begin{frame}{}
+\protect\hypertarget{section-42}{}
+\begin{itemize}
+\item
+  Para ver un ejemplo de cómo hacer una tabla, consulta el el Rscript
+  Regresion\_rs.R en esta misma carpeta
+\item
+  Se utiliza el paquete stargazer
+\item
+  Para ver cómo incluir en un markdown, consulta Tabla.Rmd en la carpeta
+  Tabla. Para ver como queda, consulta el pdf en la misma carpeta
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-43}{}
+\begin{itemize}
+\tightlist
+\item
+  A grandes rasgos, utilizamos el paquete stargazer
+\item
+  Escogemos type=`text' para editar durante el código
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tablas en Markdown}
+\protect\hypertarget{tablas-en-markdown}{}
+\begin{itemize}
+\tightlist
+\item
+  Si queremos incluirlo en un documento, lo más fácil es en markdown
+\item
+  Hacemos un chunk donde importamos el código donde trabajamos con
+  source()
+\item
+  Cuando incluyamos la tabla, hacemos un chunk con la display option
+  results=`asis'
+\item
+  Corremos el código de stargazer con type=`latex' y header=F
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-44}{}
+\begin{itemize}
+\tightlist
+\item
+  Si lo quieren hacer en latex, pueden simplemente copiar y pegar el
+  código que sale como output de correr stargazer()
+\item
+  O pueden hacer lo mismo que en markdown, pero con el paquete Sweave
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-45}{}
+\begin{itemize}
+\tightlist
+\item
+  pueden guardar tablas en carpetas con out=`path'
+\item
+  Si de plano lo quieren en un word
+
+  \begin{itemize}
+  \tightlist
+  \item
+    out= `path'
+  \item
+    type=`html'
+  \item
+    abren el html y le toman screenshot
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Interpretación coeficientes}
+\protect\hypertarget{interpretaciuxf3n-coeficientes}{}
+\begin{itemize}
+\tightlist
+\item
+  Asumamos que la regresión es causal
+\item
+  ¿Cómo interpretamos los coeficientes?
+\item
+  Depende de si nuestras variables están en niveles o logaritmos
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Puntos porcentuales vs porciento}
+\protect\hypertarget{puntos-porcentuales-vs-porciento}{}
+\begin{itemize}
+\tightlist
+\item
+  Un cambio de 10 a 15\% es un incremento de 5 puntos porcentuales
+\item
+  No es un cambio del 5\%
+\item
+  Es un cambio de \(50 \% = 100 \frac{15-10}{10}\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regresión Nivel-nivel}
+\protect\hypertarget{regresiuxf3n-nivel-nivel}{}
+\begin{itemize}
+\tightlist
+\item
+  En economía, cuando decimos por niveles nos referimos a que están en
+  las unidades continuas de interés
+
+  \begin{itemize}
+  \tightlist
+  \item
+    PIB de 100 billones
+  \item
+    Salario de 35 mil
+  \end{itemize}
+\end{itemize}
+
+\[y_i=\beta_0+\beta_1x_i+\varepsilon_i\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(\text{unidades} \ \beta_1= \frac{\text{unidades} \ y}{\text{unidades} \ x}\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-46}{}
+\begin{itemize}
+\tightlist
+\item
+  Supongamos una regresión de
+\end{itemize}
+
+Salarios\textasciitilde edad+sexo(1=mujer)+percentil de ingreso de los
+padres
+
+\begin{itemize}
+\item
+  Para cada año adicional, esperamos que el salario suba en
+  \(\hat{\beta_{edad}}\) pesos
+\item
+  Por cada percentil del ingreso de los padres adicional, esperamos que
+  el salario cambien en \(\hat{\beta_{Percentil \ padres}}\)
+  \textbf{puntos porcentuales}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-47}{}
+\begin{itemize}
+\item
+  Para dummies, recuerden que la comparativa se hace con respecto al
+  intercepto. El intercepto es el promedio para los i cuya dummy es 0
+\item
+  En promedio, esperamos que los salarios sean \(\hat{\beta_{sexo}}\)
+  pesos mayores/menores para las mujeres
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regresiones log-nivel}
+\protect\hypertarget{regresiones-log-nivel}{}
+\[ln(y_i)=\beta_0+\beta_1 x_i+\varepsilon_i\]
+
+\begin{itemize}
+\tightlist
+\item
+  Evidentemente, lo que esté dentro de los logaritmos debe ser positivo
+\item
+  No se recomienda añadir números para que sea positivo
+\item
+  \textbf{Si incrementas x por uno, esperamos que y cambie por
+  \(100 \ \beta_1\) porciento}
+\item
+  Si x cambia (en unidades de x), en qué porcentaje cambia y
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Esta interpretación es solo válida para números pequeños de
+    \(\beta\)
+  \item
+    Técnicamente, \(\% \Delta y= 100 (e^{\beta_1}-1)\)
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-48}{}
+ln(Salarios)\textasciitilde edad+sexo(1=mujer)+percentil de ingreso de
+los padres
+
+\begin{itemize}
+\item
+  Para cada año adicional, esperamos que el salario suba
+  \(100 \ \hat{\beta_{edad}}\) porciento
+\item
+  En promedio, esperamos que los salarios sean
+  \(100\ \hat{\beta_{sexo}}\) porciento mayores/menores para las mujeres
+\item
+  Por cada percentil del ingreso de los padres adicional, esperamos que
+  el salario cambien en \(100 \ \hat{\beta_{Percentil \ padres}}\)
+  porciento
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regresión nivel-log}
+\protect\hypertarget{regresiuxf3n-nivel-log}{}
+\[y_i=\beta_0+ \beta_1 \ \ln(x_i)+\varepsilon_i\]
+
+\begin{itemize}
+\tightlist
+\item
+  Si x incrementa por \textbf{uno porciento}. esperamos que y cambie por
+  \(\frac{\beta_1}{100}\) unidades de y
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-49}{}
+Salarios\textasciitilde ln(edad)+sexo(1=mujer)+ ln(percentil de ingreso
+de los padres)
+
+\begin{itemize}
+\item
+  Para un incremento de 1\% en la edad, esperamos que el salario suba
+  \(\frac{\hat{\beta_{edad}}}{100}\) pesos
+\item
+  En promedio, esperamos que los salarios sean \(\hat{\beta_{sexo}}\)
+  pesos mayores/menores para las mujeres
+\item
+  Para un incremento de 1\% en el percentil del ingreso de los padres,
+  esperamos que el salario cambien en
+  \(\frac{\hat{\beta_{Percentil \ padres}}}{100}\) pesos
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Log-log}
+\protect\hypertarget{log-log}{}
+\[ln(y_i)=\beta_0+\beta_1 \ ln(x_i) +\varepsilon_i\]
+
+\begin{itemize}
+\tightlist
+\item
+  Si incrementa x por \textbf{uno porciento}, esperamos que y cambie en
+  \(\beta_1\) \textbf{porciento}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-50}{}
+ln(Salarios)\textasciitilde ln(edad)+sexo(1=mujer)+ ln(percentil de
+ingreso de los padres)
+
+\begin{itemize}
+\item
+  Para un incremento de 1\% en la edad, esperamos que el salario cambie
+  en \(\hat{\beta_{edad}}\) porciento
+\item
+  En promedio, esperamos que los salarios sean \(\hat{\beta_{sexo}}\)
+  porciento pesos mayores/menores para las mujeres
+\item
+  Para un incremento de 1\% en el percentil del ingreso de los padres,
+  esperamos que el salario cambien en
+  \(\hat{\beta_{Percentil \ padres}}\) porciento
+\end{itemize}
+\end{frame}
+
+\begin{frame}{¿Por qué los logaritmos?}
+\protect\hypertarget{por-quuxe9-los-logaritmos}{}
+\begin{itemize}
+\tightlist
+\item
+  Los logaritmos son ampliamente utilizados en economía
+\item
+  Su utilidad está en quitar unidades y hacer resultados
+  comparables-\textgreater{} Pues hacen que el coeficiente se interprete
+  con porcentajes
+\item
+  Si tenemos variables en diferentes monedas, con diferentes
+  inflaciones, los podemos logaritmar y hacer los coeficientes
+  comparables
+\item
+  En una regresión log-log los coeficientes son \textbf{elasticidades}
+\end{itemize}
+\end{frame}
+
+\end{document}

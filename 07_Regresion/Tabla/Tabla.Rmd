@@ -9,6 +9,8 @@ output: pdf_document
 knitr::opts_chunk$set(echo = F)
 ```
 
+Un menor gini quiere decir que un país es más igualitario
+
 ```{r, include=FALSE}
 source('C:/Users/rodri/OneDrive - INSTITUTO TECNOLOGICO AUTONOMO DE MEXICO/Labs MIA/07_Regresion/Regresion_rs.R')
 library(xtable)
@@ -21,7 +23,7 @@ stargazer(modelo1, modelo2, modelo3,
                  header = F,
                 out.header = F,
                  title = 'Democracia y desigualdad',
-                 column.labels = c('Regresión con controles', 'Controles fijos y Errores agrupados'),
+                 column.labels = c('Regresión con controles', 'Efectos fijos y Errores agrupados'),
                  column.separate = c(2,1),
                  covariate.labels = c('Democracia',
                                       'Población',

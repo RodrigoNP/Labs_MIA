@@ -761,7 +761,7 @@ mean(beta_unbiased)
 
 * Asumamos que la regresión es causal
 * ¿Cómo interpretamos los coeficientes?
-* Depende de si nuestras variables están en niveles o logaritmos
+* Depende de si nuestras variables están en niveles o logaritmos    
 
 ## Puntos porcentuales vs porciento
 
